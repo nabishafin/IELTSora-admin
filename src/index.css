@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { @apply border-border; }
+  html { -webkit-font-smoothing: antialiased; }
+  body { @apply bg-white text-ink font-sans; }
+  ::selection { background: #111; color: #fff; }
+  input, textarea, select, button { border-radius: 0; }
+}
+
+@layer components {
+  .label-xs { @apply text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground; }
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #d4d4d4; }
+  .passage p { @apply mb-4 leading-7 text-[15px]; }
+  mark.hl { background: #FDE68A; color: inherit; padding: 0 1px; }
+}
