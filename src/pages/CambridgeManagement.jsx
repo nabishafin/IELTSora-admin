@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Plus, Pencil, Trash2, BookOpen, ChevronRight, Library } from "lucide-react";
+import { Plus, Pencil, Trash2, ChevronRight, Library } from "lucide-react";
 import PageHeader from "@/components/common/PageHeader";
 import { SearchInput, SimpleSelect, EmptyState, StatusDot, FormField, StatCard } from "@/components/common/misc";
 import { Input, Textarea, Switch, Label, Badge } from "@/components/ui/form-controls";
@@ -86,7 +86,7 @@ export default function CambridgeManagement() {
   const [form, setForm] = useState(null); // { initial }
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const sorted = useMemo(() => [...books].sort((a, b) => a.number - b.number), [books]);
+  const sorted = useMemo(() => [...books].sort((a, b) => b.number - a.number), [books]);
   const filtered = sorted.filter((b) => {
     if (status === "published" && !b.published) return false;
     if (status === "draft" && b.published) return false;
@@ -150,7 +150,7 @@ export default function CambridgeManagement() {
                     onClick={() => setSelected(b.number)}
                     className={cn("flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors", active?.number === b.number ? "bg-black/[0.06]" : "hover:bg-black/[0.04]")}
                   >
-                    <span className="flex h-10 w-8 shrink-0 items-center justify-center rounded-md bg-ink text-xs font-bold text-white">{b.number}</span>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border bg-subtle text-sm font-semibold tabular-nums">{b.number}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-medium">{b.title}</span>
                       <span className="block text-xs text-muted-foreground">{b.year} · {b.tests.filter((t) => t.published).length}/4 tests live</span>
@@ -168,10 +168,7 @@ export default function CambridgeManagement() {
             <div className="surface p-5">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex gap-4">
-                  <div className="flex h-24 w-16 shrink-0 flex-col justify-between rounded-lg bg-ink p-2 text-white shadow-low">
-                    <BookOpen className="h-4 w-4" />
-                    <span className="text-2xl font-bold leading-none">{active.number}</span>
-                  </div>
+                  <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md border border-border bg-subtle text-2xl font-semibold tabular-nums">{active.number}</span>
                   <div className="min-w-0">
                     <p className="label-xs">Book {active.number} · {active.year}</p>
                     <h2 className="mt-1 text-xl font-semibold tracking-tight">{active.title}</h2>

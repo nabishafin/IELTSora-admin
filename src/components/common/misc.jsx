@@ -84,14 +84,14 @@ export function StatusDot({ on, onLabel = "Published", offLabel = "Draft" }) {
 
 /* Module colours — must match the student website exactly. */
 const MODULE_STYLE = {
-  reading: "bg-[#0171E3]/10 text-[#0171E3]",
-  listening: "bg-[#EB6E00]/10 text-[#EB6E00]",
-  writing: "bg-[#6B1EFD]/10 text-[#6B1EFD]",
-  speaking: "bg-[#0B991F]/10 text-[#0B991F]",
+  reading: "bg-[#4F74A8]/10 text-[#4F74A8]",
+  listening: "bg-[#B5763A]/10 text-[#B5763A]",
+  writing: "bg-[#7A68AE]/10 text-[#7A68AE]",
+  speaking: "bg-[#5E8C6E]/10 text-[#5E8C6E]",
 };
 
 export function ModuleBadge({ module, className }) {
-  return <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold", MODULE_STYLE[module], className)}>{moduleLabel(module)}</span>;
+  return <span className={cn("inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold", MODULE_STYLE[module], className)}>{moduleLabel(module)}</span>;
 }
 
 export function DifficultyBadge({ difficulty }) {

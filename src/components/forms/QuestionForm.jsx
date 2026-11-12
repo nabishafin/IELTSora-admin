@@ -5,7 +5,7 @@ import { Input, Textarea } from "@/components/ui/form-controls";
 import { FormField, SimpleSelect } from "@/components/common/misc";
 import ListEditor from "@/components/forms/ListEditor";
 import { QUESTION_TYPES, questionTypeMeta } from "@/data/mockQuestions";
-import { CAMBRIDGE_BOOK_NUMBERS, partLabel } from "@/utils/constants";
+import { BOOKS_NEWEST_FIRST, partLabel } from "@/utils/constants";
 
 const QUESTION_MODULES = [
   { value: "reading", label: "Reading" },
@@ -110,7 +110,7 @@ export default function QuestionForm({ open, onOpenChange, initial, defaults, on
               <SimpleSelect value={form.module} onValueChange={changeModule} options={QUESTION_MODULES} />
             </FormField>
             <FormField label="Book" required>
-              <SimpleSelect value={form.book} onValueChange={(v) => set("book", v)} options={CAMBRIDGE_BOOK_NUMBERS.map((n) => ({ value: String(n), label: `Cambridge ${n}` }))} />
+              <SimpleSelect value={form.book} onValueChange={(v) => set("book", v)} options={BOOKS_NEWEST_FIRST.map((n) => ({ value: String(n), label: `Cambridge ${n}` }))} />
             </FormField>
             <FormField label="Test" required>
               <SimpleSelect value={form.test} onValueChange={(v) => set("test", v)} options={[1, 2, 3, 4].map((n) => ({ value: String(n), label: `Test ${n}` }))} />

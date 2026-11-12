@@ -60,7 +60,7 @@ function Preview({ hp }) {
   const [openFaq, setOpenFaq] = useState(0);
   return (
     <div className="text-ink">
-      <div className="flex items-center justify-between border-b border-border px-4 py-2.5 text-[10px]">
+      <div className="flex items-center justify-between border-b border-border px-4 py-2.5 text-[11.5px]">
         <span className="font-semibold">IELTSora</span>
         <span className="text-muted-foreground">Home · How it works · Study plan · Practice</span>
       </div>
@@ -68,8 +68,8 @@ function Preview({ hp }) {
         <h1 className="text-xl font-semibold leading-tight tracking-tight">{hp.heroTitle || "Hero title"}</h1>
         <p className="mt-2 text-xs leading-5 text-muted-foreground">{hp.heroDescription}</p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <span className="rounded-md bg-ink px-3 py-1.5 text-[11px] font-medium text-white">{hp.primaryCta || "Primary CTA"}</span>
-          <span className="rounded-md border border-input bg-white px-3 py-1.5 text-[11px] font-medium">{hp.secondaryCta || "Secondary CTA"}</span>
+          <span className="rounded-md bg-ink px-3 py-1.5 text-xs font-medium text-white">{hp.primaryCta || "Primary CTA"}</span>
+          <span className="rounded-md border border-input bg-white px-3 py-1.5 text-xs font-medium">{hp.secondaryCta || "Secondary CTA"}</span>
         </div>
       </section>
       <section className="border-t border-border bg-subtle px-5 py-6">
@@ -77,8 +77,8 @@ function Preview({ hp }) {
         <div className="tiles mt-3 grid-cols-2 rounded-lg shadow-none">
           {hp.features.map((f, i) => (
             <div key={i} className="bg-white p-3">
-              <p className="text-[11px] font-semibold">{f.title}</p>
-              <p className="mt-1 line-clamp-3 text-[10px] text-muted-foreground">{f.description}</p>
+              <p className="text-xs font-semibold">{f.title}</p>
+              <p className="mt-1 line-clamp-3 text-[11.5px] text-muted-foreground">{f.description}</p>
             </div>
           ))}
         </div>
@@ -88,8 +88,8 @@ function Preview({ hp }) {
         <div className="mt-3 grid gap-2">
           {hp.testimonials.map((t, i) => (
             <div key={i} className="rounded-lg border border-border bg-white p-3">
-              <p className="text-[11px] leading-4">“{t.quote}”</p>
-              <p className="mt-2 flex items-center justify-between text-[10px]">
+              <p className="text-xs leading-4">“{t.quote}”</p>
+              <p className="mt-2 flex items-center justify-between text-[11.5px]">
                 <span><strong>{t.name}</strong> · {t.role}</span>
                 <span className="inline-flex items-center gap-0.5 font-semibold"><Star className="h-2.5 w-2.5" /> Band {t.band}</span>
               </p>
@@ -102,15 +102,15 @@ function Preview({ hp }) {
         <div className="mt-3 border-t border-border">
           {hp.faqs.map((f, i) => (
             <div key={i} className="border-b border-border">
-              <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)} className="flex w-full items-center justify-between py-2 text-left text-[11px] font-medium">
+              <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)} className="flex w-full items-center justify-between py-2 text-left text-xs font-medium">
                 {f.q} <ChevronDown className={cn("h-3 w-3 transition-transform", openFaq === i && "rotate-180")} />
               </button>
-              {openFaq === i && <p className="pb-2 text-[10px] text-muted-foreground">{f.a}</p>}
+              {openFaq === i && <p className="pb-2 text-[11.5px] text-muted-foreground">{f.a}</p>}
             </div>
           ))}
         </div>
       </section>
-      <footer className="bg-[#1B1B1B] px-5 py-5 text-[10px] text-neutral-300">
+      <footer className="bg-[#1B1B1B] px-5 py-5 text-[11.5px] text-neutral-300">
         <p className="font-semibold text-white">IELTSora</p>
         <p className="mt-1">{hp.footer.tagline}</p>
         <p className="mt-2">{hp.footer.email} · {hp.footer.phone}</p>
@@ -172,7 +172,7 @@ export default function HomepageManagement() {
   const tabLabel = (label, prefix) => (
     <>
       {label}
-      {errorCount(prefix) > 0 && <span className="ml-1 rounded-full bg-destructive px-1.5 text-[10px] text-white">{errorCount(prefix)}</span>}
+      {errorCount(prefix) > 0 && <span className="ml-1 rounded-full bg-destructive px-1.5 text-[11.5px] text-white">{errorCount(prefix)}</span>}
     </>
   );
 

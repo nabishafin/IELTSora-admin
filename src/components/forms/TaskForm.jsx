@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Switch, Label } from "@/components/ui/form-controls";
 import { FormField, SimpleSelect } from "@/components/common/misc";
 import ListEditor from "@/components/forms/ListEditor";
-import { CAMBRIDGE_BOOK_NUMBERS, DIFFICULTIES, MODULES, PARTS_PER_MODULE, partLabel } from "@/utils/constants";
+import { BOOKS_NEWEST_FIRST, DIFFICULTIES, MODULES, PARTS_PER_MODULE, partLabel } from "@/utils/constants";
 
 const blank = (module, duration) => ({ module, title: "", hasSource: module === "reading" || module === "listening", book: "10", test: "1", part: "1", steps: [], duration: String(duration || 30), difficulty: "Medium" });
 
@@ -100,7 +100,7 @@ export default function TaskForm({ open, onOpenChange, initial, defaultModule = 
             {form.hasSource && (
               <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_1.4fr_auto] sm:items-end">
                 <FormField label="Book" htmlFor="t-book">
-                  <SimpleSelect id="t-book" value={form.book} onValueChange={set("book")} options={CAMBRIDGE_BOOK_NUMBERS.map((n) => ({ value: String(n), label: `Cambridge ${n}` }))} />
+                  <SimpleSelect id="t-book" value={form.book} onValueChange={set("book")} options={BOOKS_NEWEST_FIRST.map((n) => ({ value: String(n), label: `Cambridge ${n}` }))} />
                 </FormField>
                 <FormField label="Test" htmlFor="t-test">
                   <SimpleSelect id="t-test" value={form.test} onValueChange={set("test")} options={[1, 2, 3, 4].map((n) => ({ value: String(n), label: `Test ${n}` }))} />

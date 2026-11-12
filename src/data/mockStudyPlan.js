@@ -4,6 +4,7 @@
  * `ieltsora-content-v1` export format consumed by the student website.
  */
 import { phaseForDay, CAMBRIDGE_BOOK_NUMBERS } from "@/utils/constants";
+import { getDayVocabulary } from "@/data/vocabulary";
 
 /* All 48 Cambridge tests in order: Book 10 Test 1 ... Book 21 Test 4 */
 const TESTS = CAMBRIDGE_BOOK_NUMBERS.flatMap((book) => [1, 2, 3, 4].map((test) => ({ book, test })));
@@ -275,6 +276,7 @@ export function generateStudyPlan() {
       objectives: [o1, o2, THIRD_OBJECTIVE[phase]],
       published: true,
       tasks,
+      vocabulary: getDayVocabulary(day),
     };
   });
 }

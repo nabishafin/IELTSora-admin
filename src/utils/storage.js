@@ -13,6 +13,7 @@ import { generateMockTests } from "@/data/mockTests";
 import { generateModules } from "@/data/mockModules";
 import { defaultHomepage } from "@/data/mockHomepage";
 import { defaultSettings } from "@/data/mockSettings";
+import { getDayVocabulary } from "@/data/vocabulary";
 
 export const PREFIX = "ieltsora_admin_";
 export const SESSION_KEY = `${PREFIX}session`;
@@ -31,6 +32,18 @@ export const STORES = {
   settings: { key: `${PREFIX}settings`, seed: () => clone(defaultSettings) },
 };
 
+/**
+ * One-off migrations applied when stored data is read. Each returns the same
+ * object when nothing changed, or a new value that is written back.
+ */
+const MIGRATIONS = {
+  // v2: every study-plan day carries 20 vocabulary words.
+  [`${PREFIX}study_plan`]: (plan) =>
+    Array.isArray(plan) && plan.some((d) => d && d.vocabulary === undefined)
+      ? plan.map((d) => (d && d.vocabulary === undefined ? { ...d, vocabulary: getDayVocabulary(d.day) } : d))
+      : plan,
+};
+
 const cache = new Map();
 
 export function readJSON(key, fallback) {
@@ -39,8 +52,10 @@ export function readJSON(key, fallback) {
     const raw = window.localStorage.getItem(key);
     if (raw !== null) {
       const parsed = JSON.parse(raw);
-      cache.set(key, parsed);
-      return parsed;
+      const migrated = MIGRATIONS[key] ? MIGRATIONS[key](parsed) : parsed;
+      if (migrated !== parsed) writeJSON(key, migrated, { silent: true });
+      else cache.set(key, parsed);
+      return migrated;
     }
   } catch {
     /* corrupted or unavailable storage — fall back to seed */

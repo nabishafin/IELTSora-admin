@@ -193,7 +193,7 @@ export default function Analytics() {
             <p className="label-xs">{p.phase}</p>
             <p className="mt-2 text-3xl font-semibold tabular-nums">{p.completionRate}%</p>
             <p className="mt-1 text-xs text-muted-foreground">of students finished this phase</p>
-            <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-neutral-200"><div className="h-full rounded-full bg-[#0171E3]" style={{ width: `${p.completionRate}%` }} /></div>
+            <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-neutral-200"><div className="h-full rounded-full bg-[#4F74A8]" style={{ width: `${p.completionRate}%` }} /></div>
             <p className="mt-3 text-xs text-muted-foreground">{p.students} currently in phase · {p.finished} finished</p>
           </div>
         ))}

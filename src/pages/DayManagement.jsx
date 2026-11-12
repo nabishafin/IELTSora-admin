@@ -3,9 +3,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, Eye, Pencil, Plus, Save, Trash2, Undo2, RotateCcw, AlertTriangle, CalendarX, Clock } from "lucide-react";
 import PageHeader from "@/components/common/PageHeader";
 import { FormField, SimpleSelect, ModuleBadge, DifficultyBadge, EmptyState, SectionTitle } from "@/components/common/misc";
-import DayPreview, { missingModules, sourceLabel } from "@/components/common/DayPreview";
+import DayPreview, { missingModules, sourceLabel, vocabIssues } from "@/components/common/DayPreview";
 import ListEditor from "@/components/forms/ListEditor";
 import TaskForm from "@/components/forms/TaskForm";
+import VocabularyEditor from "@/components/forms/VocabularyEditor";
+import { getDayVocabulary } from "@/data/vocabulary";
 import { Input, Switch, Label, Badge } from "@/components/ui/form-controls";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/overlays";
@@ -54,6 +56,7 @@ export default function DayManagement() {
 
   const setField = (k, v) => setDraft((d) => ({ ...d, [k]: v }));
   const missing = missingModules(draft);
+  const vIssues = vocabIssues(draft.vocabulary);
   const totalMins = draft.tasks.reduce((n, t) => n + (Number(t.duration) || 0), 0);
 
   const go = (to) => (dirty ? setPendingNav(to) : navigate(to));
@@ -84,15 +87,29 @@ export default function DayManagement() {
     if (!draft.objectives.length) next.objectives = "Add at least one learning objective.";
     if (draft.published && missing.length) next.tasks = `A published day needs all four module tasks. Missing: ${missing.join(", ")}. Add them or unpublish the day.`;
     if (!draft.tasks.length) next.tasks = "Add at least one task.";
+    if (draft.published && vIssues.length) next.vocabulary = `A published day needs exactly 20 complete, unique vocabulary words. ${vIssues[0]} Fix the list or unpublish the day.`;
     setErrors(next);
     if (Object.keys(next).length) {
       toast({ title: "Day not saved", description: Object.values(next)[0], variant: "error" });
       return;
     }
-    const clean = { ...draft, title: draft.title.trim(), objectives: draft.objectives.map((o) => o.trim()).filter(Boolean) };
+    const vocabulary = draft.vocabulary
+      ? {
+          theme: String(draft.vocabulary.theme || "").trim(),
+          words: (draft.vocabulary.words || [])
+            .map((w) => ({ word: String(w.word || "").trim(), pos: w.pos || "noun", meaning: String(w.meaning || "").trim(), example: String(w.example || "").trim() }))
+            .filter((w) => w.word || w.meaning || w.example),
+        }
+      : null;
+    const clean = { ...draft, title: draft.title.trim(), objectives: draft.objectives.map((o) => o.trim()).filter(Boolean), vocabulary };
     setPlan((list) => list.map((d) => (d.day === dayNo ? clean : d)));
     setDraft(clone(clean));
-    toast({ title: `Day ${dayNo} saved`, description: missing.length ? `Saved as unpublished. Missing: ${missing.join(", ")}.` : "All changes are stored locally.", variant: "success" });
+    toast({ title: `Day ${dayNo} saved`, description: missing.length || vIssues.length ? `Saved as unpublished. ${missing.length ? `Missing: ${missing.join(", ")}. ` : ""}${vIssues[0] || ""}` : "All changes are stored locally.", variant: "success" });
+  };
+
+  const resetVocabulary = () => {
+    setField("vocabulary", getDayVocabulary(dayNo) || { theme: "", words: [] });
+    toast({ title: "Default words loaded", description: "Review and save the day to apply them." });
   };
 
   const restoreDefault = () => {
@@ -187,6 +204,13 @@ export default function DayManagement() {
               ))}
             </ol>
           )}
+
+          <div className="mt-6">
+            {errors.vocabulary && (
+              <p className="mb-3 rounded-lg border border-red-700/30 bg-red-50 px-3 py-2 text-sm text-red-800">{errors.vocabulary}</p>
+            )}
+            <VocabularyEditor vocabulary={draft.vocabulary} onChange={(v) => setField("vocabulary", v)} onReset={resetVocabulary} highlight={!!errors.vocabulary} />
+          </div>
         </div>
 
         <aside className="surface order-1 grid content-start gap-4 p-5 xl:order-2">

@@ -62,7 +62,7 @@ export default function AdminLayout() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden rounded-full bg-[#0074E2]/10 px-2.5 py-1 text-xs font-medium text-[#005fb8] sm:inline">
+            <span className="hidden rounded-full bg-[#4F74A8]/10 px-2.5 py-1 text-xs font-medium text-[#005fb8] sm:inline">
               Demo data · LocalStorage
             </span>
             <span className="hidden text-sm font-medium md:inline">{session?.name}</span>
@@ -71,7 +71,7 @@ export default function AdminLayout() {
             </Button>
           </div>
         </header>
-        <main className="mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <main className="w-full px-4 py-6 sm:px-6 lg:px-8 lg:py-7">
           <Outlet />
         </main>
       </div>

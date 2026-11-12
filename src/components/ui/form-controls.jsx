@@ -24,7 +24,7 @@ export const Label = React.forwardRef(({ className, ...props }, ref) => <LabelPr
 Label.displayName = "Label";
 
 /* Badge (pill) */
-export const badgeVariants = cva("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap", {
+export const badgeVariants = cva("inline-flex items-center gap-1 rounded border px-2 py-0.5 text-xs font-semibold whitespace-nowrap", {
   variants: {
     variant: {
       default: "border-transparent bg-ink text-white",
@@ -46,7 +46,7 @@ export function Badge({ className, variant, ...props }) {
 export const Progress = React.forwardRef(({ className, value, indicatorClassName, ...props }, ref) => (
   <ProgressPrimitive.Root ref={ref} className={cn("relative h-1.5 w-full overflow-hidden rounded-full bg-black/[0.08]", className)} {...props}>
     <ProgressPrimitive.Indicator
-      className={cn("h-full w-full flex-1 rounded-full bg-ink transition-all duration-500", indicatorClassName)}
+      className={cn("h-full w-full flex-1 rounded-full bg-[#4F74A8] transition-all duration-500", indicatorClassName)}
       style={{ transform: "translateX(-" + (100 - Math.min(100, Math.max(0, value || 0))) + "%)" }}
     />
   </ProgressPrimitive.Root>
@@ -58,7 +58,7 @@ export const Checkbox = React.forwardRef(({ className, ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      "peer h-4 w-4 shrink-0 rounded-[5px] border border-input bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:opacity-50 data-[state=checked]:border-ink data-[state=checked]:bg-ink data-[state=checked]:text-white",
+      "peer h-4 w-4 shrink-0 rounded-sm border border-input bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:opacity-50 data-[state=checked]:border-ink data-[state=checked]:bg-ink data-[state=checked]:text-white",
       className
     )}
     {...props}

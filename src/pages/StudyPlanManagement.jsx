@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Eye, Pencil, Download, Upload, RotateCcw, LayoutGrid, List, CalendarX, AlertTriangle } from "lucide-react";
 import PageHeader from "@/components/common/PageHeader";
 import { SearchInput, SimpleSelect, EmptyState, StatusDot, ModuleBadge, StatCard } from "@/components/common/misc";
-import DayPreview, { missingModules } from "@/components/common/DayPreview";
+import DayPreview, { missingModules, vocabCount, vocabIssues, VOCAB_TARGET, VOCAB_COLOR } from "@/components/common/DayPreview";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge, Switch } from "@/components/ui/form-controls";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,27 @@ import { PHASES } from "@/utils/constants";
 import { resetStore } from "@/utils/storage";
 import { downloadContentExport, validateContent, applyContentImport, readJsonFile } from "@/utils/contentSync";
 import { cn } from "@/lib/utils";
+
+/** Why a day cannot be published (four modules + 20 valid vocabulary words). */
+const publishProblems = (d) => {
+  const m = missingModules(d);
+  return [...(m.length ? [`Missing module task(s): ${m.join(", ")}.`] : []), ...vocabIssues(d.vocabulary)];
+};
+
+function VocabPill({ day }) {
+  const n = vocabCount(day);
+  const ok = vocabIssues(day.vocabulary).length === 0;
+  return (
+    <span
+      className={cn("inline-flex items-center gap-1 rounded px-2 py-0.5 text-xs font-semibold tabular-nums", !ok && "bg-amber-100 text-amber-900")}
+      style={ok ? { background: `${VOCAB_COLOR}1A`, color: VOCAB_COLOR } : undefined}
+      title={ok ? "Vocabulary complete" : vocabIssues(day.vocabulary).join(" ")}
+    >
+      {!ok && <AlertTriangle className="h-3 w-3" />}
+      {n} words
+    </span>
+  );
+}
 
 const totalMinutes = (d) => d.tasks.reduce((n, t) => n + (Number(t.duration) || 0), 0);
 const fmtMins = (m) => `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, "0")}m`;
@@ -37,7 +58,7 @@ export default function StudyPlanManagement() {
       if (phase !== "all" && d.phase !== phase) return false;
       if (status === "published" && !d.published) return false;
       if (status === "draft" && d.published) return false;
-      if (status === "incomplete" && missingModules(d).length === 0) return false;
+      if (status === "incomplete" && publishProblems(d).length === 0) return false;
       if (!q) return true;
       return String(d.day) === q || d.title.toLowerCase().includes(q) || d.tasks.some((t) => t.title.toLowerCase().includes(q));
     });
@@ -45,18 +66,30 @@ export default function StudyPlanManagement() {
 
   const published = plan.filter((d) => d.published).length;
   const incomplete = plan.filter((d) => missingModules(d).length > 0).length;
+  const vocabOff = plan.filter((d) => vocabIssues(d.vocabulary).length > 0).length;
   const avgMins = plan.length ? Math.round(plan.reduce((n, d) => n + totalMinutes(d), 0) / plan.length) : 0;
 
   const togglePublish = (day) => {
     const target = plan.find((d) => d.day === day);
+    const problems = publishProblems(target);
+    if (!target.published && problems.length) {
+      toast({ title: `Day ${day} cannot be published`, description: problems[0], variant: "error" });
+      return;
+    }
     setPlan((list) => list.map((d) => (d.day === day ? { ...d, published: !d.published } : d)));
     toast({ title: target.published ? `Day ${day} unpublished` : `Day ${day} published`, variant: "success" });
   };
 
   const applyBulk = () => {
     const p = PHASES.find((x) => x.name === bulk.phase);
-    setPlan((list) => list.map((d) => (!p || (d.day >= p.start && d.day <= p.end) ? { ...d, published: bulk.published } : d)));
-    toast({ title: `${bulk.phase === "all" ? "All days" : bulk.phase} ${bulk.published ? "published" : "unpublished"}`, variant: "success" });
+    const inScope = (d) => !p || (d.day >= p.start && d.day <= p.end);
+    const skipped = bulk.published ? plan.filter((d) => inScope(d) && !d.published && publishProblems(d).length).map((d) => d.day) : [];
+    setPlan((list) => list.map((d) => (inScope(d) && !skipped.includes(d.day) ? { ...d, published: bulk.published } : d)));
+    toast({
+      title: `${bulk.phase === "all" ? "All days" : bulk.phase} ${bulk.published ? "published" : "unpublished"}`,
+      description: skipped.length ? `Skipped day(s) ${skipped.join(", ")} — fix missing tasks or vocabulary first.` : undefined,
+      variant: skipped.length ? "default" : "success",
+    });
   };
 
   const onImportFile = async (e) => {
@@ -98,11 +131,12 @@ export default function StudyPlanManagement() {
         }
       />
 
-      <div className="mb-6 grid grid-cols-2 tiles lg:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 tiles lg:grid-cols-5">
         <StatCard className="rounded-none border-0 shadow-none" label="Days" value={plan.length} hint="Across three phases" />
         <StatCard className="rounded-none border-0 shadow-none" label="Published" value={`${published}/${plan.length}`} hint={`${plan.length - published} unpublished`} />
         <StatCard className="rounded-none border-0 shadow-none" label="Total tasks" value={plan.reduce((n, d) => n + d.tasks.length, 0)} hint={incomplete ? `${incomplete} day(s) missing a module` : "All days have four modules"} />
         <StatCard className="rounded-none border-0 shadow-none" label="Avg. study time" value={fmtMins(avgMins)} hint="Per day" />
+        <StatCard className="rounded-none border-0 shadow-none col-span-2 lg:col-span-1" label="Vocabulary" value={plan.reduce((n, d) => n + vocabCount(d), 0)} hint={vocabOff ? `${vocabOff} day(s) not at ${VOCAB_TARGET} valid words` : `${VOCAB_TARGET} words on every day`} />
       </div>
 
       <div className="mb-6 tiles md:grid-cols-3">
@@ -131,7 +165,7 @@ export default function StudyPlanManagement() {
       <div className="mb-4 grid gap-3 md:grid-cols-[1fr_200px_180px_auto]">
         <SearchInput value={query} onChange={setQuery} placeholder="Search by day number, title or task…" />
         <SimpleSelect value={phase} onValueChange={setPhase} options={[{ value: "all", label: "All phases" }, ...PHASES.map((p) => p.name)]} />
-        <SimpleSelect value={status} onValueChange={setStatus} options={[{ value: "all", label: "All statuses" }, { value: "published", label: "Published" }, { value: "draft", label: "Unpublished" }, { value: "incomplete", label: "Missing modules" }]} />
+        <SimpleSelect value={status} onValueChange={setStatus} options={[{ value: "all", label: "All statuses" }, { value: "published", label: "Published" }, { value: "draft", label: "Unpublished" }, { value: "incomplete", label: "Needs attention" }]} />
         <div className="flex rounded-lg bg-black/[0.05] p-0.5">
           <button onClick={() => setView("grid")} className={cn("flex h-8 w-9 items-center justify-center rounded-md transition-colors", view === "grid" ? "bg-white text-ink shadow-xs" : "text-muted-foreground hover:text-ink")} aria-label="Grid view"><LayoutGrid className="h-4 w-4" /></button>
           <button onClick={() => setView("table")} className={cn("flex h-8 w-9 items-center justify-center rounded-md transition-colors", view === "table" ? "bg-white text-ink shadow-xs" : "text-muted-foreground hover:text-ink")} aria-label="Table view"><List className="h-4 w-4" /></button>
@@ -156,7 +190,7 @@ export default function StudyPlanManagement() {
                 <ul className="mt-3 grid flex-1 gap-1.5">
                   {d.tasks.map((t) => (
                     <li key={t.id} className="flex items-center gap-2 text-xs">
-                      <ModuleBadge module={t.module} className="w-[72px] shrink-0 justify-center px-1 text-[10px]" />
+                      <ModuleBadge module={t.module} className="w-[72px] shrink-0 justify-center px-1 text-[11.5px]" />
                       <span className="truncate text-muted-foreground" title={t.title}>{t.title}</span>
                     </li>
                   ))}
@@ -165,7 +199,7 @@ export default function StudyPlanManagement() {
                   <p className="mt-2 inline-flex items-center gap-1 text-xs text-amber-800"><AlertTriangle className="h-3 w-3" /> Missing: {missing.join(", ")}</p>
                 )}
                 <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
-                  <span className="text-xs tabular-nums text-muted-foreground">{fmtMins(totalMinutes(d))} · <StatusDot on={d.published} offLabel="Unpublished" /></span>
+                  <span className="flex flex-wrap items-center gap-2 text-xs tabular-nums text-muted-foreground">{fmtMins(totalMinutes(d))} <VocabPill day={d} /> <StatusDot on={d.published} offLabel="Unpublished" /></span>
                   <div className="flex">
                     <Button variant="ghost" size="icon" onClick={() => setPreview(d)} aria-label="Preview"><Eye /></Button>
                     <Button variant="ghost" size="icon" asChild><Link to={`/study-plan/${d.day}`} aria-label="Edit"><Pencil /></Link></Button>
@@ -184,6 +218,7 @@ export default function StudyPlanManagement() {
                 <TableHead>Title</TableHead>
                 <TableHead>Phase</TableHead>
                 <TableHead>Tasks</TableHead>
+                <TableHead>Vocabulary</TableHead>
                 <TableHead>Time</TableHead>
                 <TableHead>Published</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
@@ -199,6 +234,7 @@ export default function StudyPlanManagement() {
                     {d.tasks.length}
                     {missingModules(d).length > 0 && <AlertTriangle className="ml-1 inline h-3 w-3 text-amber-700" />}
                   </TableCell>
+                  <TableCell><VocabPill day={d} /></TableCell>
                   <TableCell className="tabular-nums text-muted-foreground">{fmtMins(totalMinutes(d))}</TableCell>
                   <TableCell><Switch checked={d.published} onCheckedChange={() => togglePublish(d.day)} aria-label={`Publish day ${d.day}`} /></TableCell>
                   <TableCell className="text-right">

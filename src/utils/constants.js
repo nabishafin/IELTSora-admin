@@ -17,6 +17,8 @@ export const phaseForDay = (day) => (PHASES.find((p) => day >= p.start && day <=
 export const DIFFICULTIES = ["Easy", "Medium", "Hard"];
 export const BAND_OPTIONS = ["4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0"];
 export const CAMBRIDGE_BOOK_NUMBERS = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+/** Display order for lists and dropdowns: newest book first. */
+export const BOOKS_NEWEST_FIRST = [...CAMBRIDGE_BOOK_NUMBERS].reverse();
 export const TOTAL_DAYS = 60;
 
 /** Number of parts per module in a Cambridge test. */
@@ -37,9 +39,9 @@ export const CHART = {
   light: "#a3a3a3",
   faint: "#d4d4d4",
   grid: "#EDEDED",
-  primary: "#0171E3",
-  palette: ["#0171E3", "#EB6E00", "#6B1EFD", "#0B991F"],
+  primary: "#4F74A8",
+  palette: ["#4F74A8", "#B5763A", "#7A68AE", "#5E8C6E"],
 };
 /** Module colours (identical to the student website). */
-export const MODULE_COLORS = { reading: "#0171E3", listening: "#EB6E00", writing: "#6B1EFD", speaking: "#0B991F" };
+export const MODULE_COLORS = { reading: "#4F74A8", listening: "#B5763A", writing: "#7A68AE", speaking: "#5E8C6E" };
 export const moduleColor = (keyOrLabel) => MODULE_COLORS[String(keyOrLabel).toLowerCase()] || CHART.primary;

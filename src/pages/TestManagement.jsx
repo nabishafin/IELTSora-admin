@@ -49,7 +49,7 @@ function Preview({ tab, test, book, questions }) {
             <p className="label-xs">{tab === "reading" ? `Passage ${part}` : `Section ${part}`}</p>
             <h3 className="mt-1 text-lg font-semibold">{item?.title}</h3>
             {tab === "listening" && (
-              <div className="mt-3 rounded-lg border border-[#0074E2]/20 bg-[#0074E2]/5 p-3 text-xs">
+              <div className="mt-3 rounded-lg border border-[#4F74A8]/20 bg-[#4F74A8]/5 p-3 text-xs">
                 <p className="font-semibold">Sample audio slot: {item?.audioLabel}</p>
                 <p className="mt-0.5 text-muted-foreground">No recording is bundled in this demo — the student app plays clearly labelled sample audio.</p>
               </div>

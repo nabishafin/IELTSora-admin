@@ -58,9 +58,9 @@ export default function Login() {
             <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
             <p className="mt-1.5 text-sm text-muted-foreground">Welcome back. Sign in to manage IELTSora.</p>
 
-            <div className="mt-6 rounded-lg border border-[#0074E2]/20 bg-[#0074E2]/5 p-4">
+            <div className="mt-6 rounded-lg border border-[#4F74A8]/20 bg-[#4F74A8]/5 p-4">
               <div className="flex items-start gap-3">
-                <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-[#0074E2]" />
+                <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-[#4F74A8]" />
                 <div className="min-w-0 flex-1 text-sm">
                   <p className="font-semibold">Demonstration authentication</p>
                   <p className="mt-1 text-xs text-muted-foreground">
@@ -111,33 +111,33 @@ export default function Login() {
 
       {/* Right: media panel */}
       <div className="hidden p-3 lg:block">
-        <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-3xl bg-[#1B1B1B] p-12 text-white">
-          <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#0171E3]/30 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-32 left-10 h-72 w-72 rounded-full bg-[#6B1EFD]/25 blur-3xl" />
-          <div className="relative flex items-center gap-2 text-sm text-neutral-300">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-xs font-bold text-ink">I</span>
+        <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-xl border border-border bg-white p-12 text-ink">
+          <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#4F74A8]/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-32 left-10 h-72 w-72 rounded-full bg-[#4F74A8]/10 blur-3xl" />
+          <div className="relative flex items-center gap-2 text-sm text-muted-foreground">
+            <span className="flex h-7 w-7 items-center justify-center rounded bg-ink text-xs font-bold text-white">I</span>
             IELTSora Admin
           </div>
           <div className="relative">
-            <p className="text-sm text-neutral-400">Content & platform management</p>
+            <p className="text-sm text-muted-foreground">Content & platform management</p>
             <h2 className="mt-3 max-w-md text-4xl font-semibold leading-tight tracking-tight">Run the whole 60-day IELTS programme from one place.</h2>
-            <p className="mt-4 max-w-md text-sm leading-6 text-neutral-400">Edit daily tasks, manage the Cambridge 10–21 library and question bank, build mock tests and follow every student's progress.</p>
+            <p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">Edit daily tasks, manage the Cambridge 10–21 library and question bank, build mock tests and follow every student's progress.</p>
             <div className="mt-10 grid max-w-lg grid-cols-3 gap-3">
               {[
                 { icon: CalendarDays, value: "60", label: "Plan days" },
                 { icon: BookOpen, value: "48", label: "Cambridge tests" },
                 { icon: Users, value: "40", label: "Demo students" },
               ].map((s) => (
-                <div key={s.label} className="rounded-xl bg-white/[0.06] p-4 ring-1 ring-white/10">
-                  <s.icon className="h-4 w-4 text-neutral-400" />
+                <div key={s.label} className="rounded border border-border bg-subtle/60 p-4">
+                  <s.icon className="h-4 w-4 text-muted-foreground" />
                   <p className="mt-3 text-2xl font-semibold tabular-nums">{s.value}</p>
-                  <p className="text-xs text-neutral-400">{s.label}</p>
+                  <p className="text-xs text-muted-foreground">{s.label}</p>
                 </div>
               ))}
             </div>
           </div>
           <div className="relative flex gap-1.5">
-            {["#0171E3", "#EB6E00", "#6B1EFD", "#0B991F"].map((c) => (
+            {["#4F74A8", "#B5763A", "#7A68AE", "#5E8C6E"].map((c) => (
               <span key={c} className="h-1.5 w-8 rounded-full" style={{ background: c }} />
             ))}
           </div>

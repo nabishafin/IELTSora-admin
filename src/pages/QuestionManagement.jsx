@@ -12,7 +12,7 @@ import { ConfirmDialog, Dialog, DialogContent, DialogFooter, DialogHeader, Dialo
 import { useToast } from "@/components/ui/toast";
 import { useStore } from "@/hooks/useLocalStorage";
 import { QUESTION_TYPES, questionTypeLabel } from "@/data/mockQuestions";
-import { CAMBRIDGE_BOOK_NUMBERS, partLabel } from "@/utils/constants";
+import { BOOKS_NEWEST_FIRST, partLabel } from "@/utils/constants";
 import { formatDate } from "@/utils/format";
 import { uid } from "@/utils/random";
 
@@ -126,7 +126,7 @@ export default function QuestionManagement() {
           <SearchInput value={query} onChange={(v) => { setQuery(v); setPage(1); }} placeholder="Search question text, answer or ID…" />
           <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
             <SimpleSelect value={f.module} onValueChange={(v) => setFilter("module", v)} options={[{ value: "all", label: "All modules" }, { value: "reading", label: "Reading" }, { value: "listening", label: "Listening" }]} />
-            <SimpleSelect value={f.book} onValueChange={(v) => setFilter("book", v)} options={[{ value: "all", label: "All books" }, ...CAMBRIDGE_BOOK_NUMBERS.map((n) => ({ value: String(n), label: `Cambridge ${n}` }))]} />
+            <SimpleSelect value={f.book} onValueChange={(v) => setFilter("book", v)} options={[{ value: "all", label: "All books" }, ...BOOKS_NEWEST_FIRST.map((n) => ({ value: String(n), label: `Cambridge ${n}` }))]} />
             <SimpleSelect value={f.test} onValueChange={(v) => setFilter("test", v)} options={[{ value: "all", label: "All tests" }, ...[1, 2, 3, 4].map((n) => ({ value: String(n), label: `Test ${n}` }))]} />
             <SimpleSelect value={f.part} onValueChange={(v) => setFilter("part", v)} options={[{ value: "all", label: "All parts" }, ...Array.from({ length: f.module === "reading" ? 3 : 4 }, (_, i) => ({ value: String(i + 1), label: f.module === "all" ? `Part ${i + 1}` : `${partLabel(f.module)} ${i + 1}` }))]} />
             <SimpleSelect className="col-span-2 md:col-span-1" value={f.type} onValueChange={(v) => setFilter("type", v)} options={[{ value: "all", label: "All types" }, ...typeOptions.map((t) => ({ value: t.value, label: t.label }))]} />

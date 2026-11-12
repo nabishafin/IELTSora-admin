@@ -177,7 +177,7 @@ export default function Users() {
                   <TableRow key={u.id} className="cursor-pointer" onClick={() => navigate(`/users/${u.id}`)}>
                     <TableCell className="min-w-[220px]">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black/[0.06] text-[11px] font-semibold">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black/[0.06] text-xs font-semibold">
                           {u.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}
                         </span>
                         <div className="min-w-0">

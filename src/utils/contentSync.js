@@ -31,6 +31,19 @@ const sanitizeTask = (t) => {
   return out;
 };
 
+const VOCAB_POS = ["noun", "verb", "adjective", "adverb", "phrase"];
+const str = (v) => (v === null || v === undefined ? "" : String(v)).trim();
+
+/** Vocabulary: { theme, words: [{ word, pos, meaning, example }] } or null. Empty words are dropped. */
+export const sanitizeVocabulary = (v) => {
+  if (!v || typeof v !== "object") return null;
+  const words = (Array.isArray(v.words) ? v.words : [])
+    .filter((w) => w && typeof w === "object")
+    .map((w) => ({ word: str(w.word), pos: VOCAB_POS.includes(str(w.pos)) ? str(w.pos) : "noun", meaning: str(w.meaning), example: str(w.example) }))
+    .filter((w) => w.word);
+  return { theme: str(v.theme), words };
+};
+
 const sanitizeDay = (d) => ({
   day: Number(d.day),
   title: d.title,
@@ -38,6 +51,7 @@ const sanitizeDay = (d) => ({
   objectives: Array.isArray(d.objectives) ? d.objectives.filter(Boolean).map(String) : [],
   published: Boolean(d.published),
   tasks: (d.tasks || []).map(sanitizeTask),
+  vocabulary: sanitizeVocabulary(d.vocabulary),
 });
 
 const sanitizeHomepage = (h) => ({
@@ -93,6 +107,11 @@ export function validateContent(data) {
       if (!PHASE_NAMES.includes(d.phase)) errors.push(`Day ${d.day}: invalid phase "${d.phase}".`);
       if (!Array.isArray(d.tasks)) errors.push(`Day ${d.day}: tasks must be an array.`);
       else d.tasks.forEach((t) => !MODULE_KEYS.includes(t.module) && errors.push(`Day ${d.day}: invalid module "${t.module}".`));
+      if (d.vocabulary !== undefined && d.vocabulary !== null) {
+        const w = d.vocabulary.words;
+        if (typeof d.vocabulary !== "object" || !Array.isArray(w)) errors.push(`Day ${d.day}: vocabulary.words must be an array.`);
+        else if (w.some((x) => !x || typeof x !== "object" || !str(x.word) || !str(x.meaning))) errors.push(`Day ${d.day}: every vocabulary word needs a word and a meaning.`);
+      }
     });
   if (!data.homepage || typeof data.homepage !== "object") errors.push("homepage is missing.");
   return errors.slice(0, 6);
