@@ -63,7 +63,7 @@ export default function ListEditor({ items = [], onChange, placeholder = "Add an
             }}
             placeholder={placeholder}
           />
-          <Button type="button" variant="secondary" onClick={add} disabled={!draft.trim()}>
+          <Button type="button" variant="outline" onClick={add} disabled={!draft.trim()}>
             <Plus /> {addLabel}
           </Button>
         </div>

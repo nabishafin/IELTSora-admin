@@ -98,14 +98,14 @@ export default function StudyPlanManagement() {
         }
       />
 
-      <div className="mb-6 grid grid-cols-2 gap-px border border-border bg-border lg:grid-cols-4">
-        <StatCard className="border-0" label="Days" value={plan.length} hint="Across three phases" />
-        <StatCard className="border-0" label="Published" value={`${published}/${plan.length}`} hint={`${plan.length - published} unpublished`} />
-        <StatCard className="border-0" label="Total tasks" value={plan.reduce((n, d) => n + d.tasks.length, 0)} hint={incomplete ? `${incomplete} day(s) missing a module` : "All days have four modules"} />
-        <StatCard className="border-0" label="Avg. study time" value={fmtMins(avgMins)} hint="Per day" />
+      <div className="mb-6 grid grid-cols-2 tiles lg:grid-cols-4">
+        <StatCard className="rounded-none border-0 shadow-none" label="Days" value={plan.length} hint="Across three phases" />
+        <StatCard className="rounded-none border-0 shadow-none" label="Published" value={`${published}/${plan.length}`} hint={`${plan.length - published} unpublished`} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Total tasks" value={plan.reduce((n, d) => n + d.tasks.length, 0)} hint={incomplete ? `${incomplete} day(s) missing a module` : "All days have four modules"} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Avg. study time" value={fmtMins(avgMins)} hint="Per day" />
       </div>
 
-      <div className="mb-6 grid gap-px border border-border bg-border md:grid-cols-3">
+      <div className="mb-6 tiles md:grid-cols-3">
         {PHASES.map((p) => {
           const days = plan.filter((d) => d.day >= p.start && d.day <= p.end);
           const pub = days.filter((d) => d.published).length;
@@ -132,16 +132,16 @@ export default function StudyPlanManagement() {
         <SearchInput value={query} onChange={setQuery} placeholder="Search by day number, title or task…" />
         <SimpleSelect value={phase} onValueChange={setPhase} options={[{ value: "all", label: "All phases" }, ...PHASES.map((p) => p.name)]} />
         <SimpleSelect value={status} onValueChange={setStatus} options={[{ value: "all", label: "All statuses" }, { value: "published", label: "Published" }, { value: "draft", label: "Unpublished" }, { value: "incomplete", label: "Missing modules" }]} />
-        <div className="flex border border-border">
-          <button onClick={() => setView("grid")} className={cn("flex h-10 w-10 items-center justify-center", view === "grid" ? "bg-ink text-white" : "hover:bg-subtle")} aria-label="Grid view"><LayoutGrid className="h-4 w-4" /></button>
-          <button onClick={() => setView("table")} className={cn("flex h-10 w-10 items-center justify-center", view === "table" ? "bg-ink text-white" : "hover:bg-subtle")} aria-label="Table view"><List className="h-4 w-4" /></button>
+        <div className="flex rounded-lg bg-black/[0.05] p-0.5">
+          <button onClick={() => setView("grid")} className={cn("flex h-8 w-9 items-center justify-center rounded-md transition-colors", view === "grid" ? "bg-white text-ink shadow-xs" : "text-muted-foreground hover:text-ink")} aria-label="Grid view"><LayoutGrid className="h-4 w-4" /></button>
+          <button onClick={() => setView("table")} className={cn("flex h-8 w-9 items-center justify-center rounded-md transition-colors", view === "table" ? "bg-white text-ink shadow-xs" : "text-muted-foreground hover:text-ink")} aria-label="Table view"><List className="h-4 w-4" /></button>
         </div>
       </div>
 
       {filtered.length === 0 ? (
         <EmptyState icon={CalendarX} title="No days match these filters" action={<Button variant="secondary" onClick={() => { setQuery(""); setPhase("all"); setStatus("all"); }}>Clear filters</Button>} />
       ) : view === "grid" ? (
-        <div className="grid gap-px border border-border bg-border sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="tiles sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {filtered.map((d) => {
             const missing = missingModules(d);
             return (
@@ -156,7 +156,7 @@ export default function StudyPlanManagement() {
                 <ul className="mt-3 grid flex-1 gap-1.5">
                   {d.tasks.map((t) => (
                     <li key={t.id} className="flex items-center gap-2 text-xs">
-                      <ModuleBadge module={t.module} className="w-[78px] shrink-0 justify-center px-1 text-[10px]" />
+                      <ModuleBadge module={t.module} className="w-[72px] shrink-0 justify-center px-1 text-[10px]" />
                       <span className="truncate text-muted-foreground" title={t.title}>{t.title}</span>
                     </li>
                   ))}
@@ -176,7 +176,7 @@ export default function StudyPlanManagement() {
           })}
         </div>
       ) : (
-        <div className="border border-border">
+        <div className="surface overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow>

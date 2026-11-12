@@ -92,7 +92,7 @@ export default function TaskForm({ open, onOpenChange, initial, defaultModule = 
             </FormField>
           </div>
 
-          <div className="border border-border p-4">
+          <div className="rounded-lg border border-border p-4">
             <div className="flex items-center justify-between gap-3">
               <Label htmlFor="t-src">Link to a Cambridge test</Label>
               <Switch id="t-src" checked={form.hasSource} onCheckedChange={set("hasSource")} />

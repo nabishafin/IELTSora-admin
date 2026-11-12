@@ -129,14 +129,14 @@ export default function Users() {
         }
       />
 
-      <div className="mb-6 grid grid-cols-2 gap-px border border-border bg-border lg:grid-cols-4">
-        <StatCard className="border-0" label="Total" value={users.length} />
-        <StatCard className="border-0" label="Active" value={active} hint={`${pct(active, users.length)}%`} />
-        <StatCard className="border-0" label="Inactive" value={users.length - active} />
-        <StatCard className="border-0" label="Avg. current day" value={users.length ? Math.round(users.reduce((n, u) => n + u.currentDay, 0) / users.length) : 0} />
+      <div className="mb-6 grid grid-cols-2 tiles lg:grid-cols-4">
+        <StatCard className="rounded-none border-0 shadow-none" label="Total" value={users.length} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Active" value={active} hint={`${pct(active, users.length)}%`} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Inactive" value={users.length - active} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Avg. current day" value={users.length ? Math.round(users.reduce((n, u) => n + u.currentDay, 0) / users.length) : 0} />
       </div>
 
-      <div className="border border-border">
+      <div className="surface overflow-hidden">
         <div className="grid gap-3 border-b border-border p-4 md:grid-cols-[1fr_160px_180px_180px]">
           <SearchInput value={query} onChange={resetPage(setQuery)} placeholder="Search by name, email or country…" />
           <SimpleSelect value={status} onValueChange={resetPage(setStatus)} options={[{ value: "all", label: "All statuses" }, { value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }]} />
@@ -177,7 +177,7 @@ export default function Users() {
                   <TableRow key={u.id} className="cursor-pointer" onClick={() => navigate(`/users/${u.id}`)}>
                     <TableCell className="min-w-[220px]">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border text-[11px] font-semibold">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black/[0.06] text-[11px] font-semibold">
                           {u.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}
                         </span>
                         <div className="min-w-0">

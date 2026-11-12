@@ -14,7 +14,7 @@ export function Pagination({ page, pageSize, total, onPageChange }) {
         Showing <span className="font-medium text-ink">{from}–{to}</span> of <span className="font-medium text-ink">{total}</span>
       </p>
       <div className="flex items-center gap-1">
-        <Button variant="secondary" size="sm" onClick={() => onPageChange(page - 1)} disabled={page <= 1} aria-label="Previous page">
+        <Button variant="outline" size="sm" onClick={() => onPageChange(page - 1)} disabled={page <= 1} aria-label="Previous page">
           <ChevronLeft />
         </Button>
         {pages.map((p, i) => (
@@ -25,7 +25,7 @@ export function Pagination({ page, pageSize, total, onPageChange }) {
             </Button>
           </span>
         ))}
-        <Button variant="secondary" size="sm" onClick={() => onPageChange(page + 1)} disabled={page >= pageCount} aria-label="Next page">
+        <Button variant="outline" size="sm" onClick={() => onPageChange(page + 1)} disabled={page >= pageCount} aria-label="Next page">
           <ChevronRight />
         </Button>
       </div>
@@ -41,7 +41,7 @@ export function SortableHead({ label, field, sort, onSort, className }) {
       <button
         type="button"
         onClick={() => onSort(field)}
-        className={cn("inline-flex items-center gap-1 uppercase tracking-wider hover:text-ink", active && "text-ink")}
+        className={cn("inline-flex items-center gap-1 hover:text-ink", active && "text-ink")}
       >
         {label}
         <Icon className="h-3 w-3" />

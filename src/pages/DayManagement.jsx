@@ -141,7 +141,7 @@ export default function DayManagement() {
             Module tasks
           </SectionTitle>
           {(missing.length > 0 || errors.tasks) && (
-            <div className="mb-3 flex items-start gap-2 border border-amber-600/30 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+            <div className="mb-3 flex items-start gap-2 rounded-lg border border-amber-600/30 bg-amber-50 px-3 py-2 text-sm text-amber-900">
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
               <div>
                 {errors.tasks || `Each day requires four module tasks. Missing: ${missing.join(", ")}.`}
@@ -158,7 +158,7 @@ export default function DayManagement() {
           {draft.tasks.length === 0 ? (
             <EmptyState title="No tasks yet" description="Create a Reading, Listening, Writing and Speaking task for this day." action={<Button onClick={() => setTaskDialog({ index: -1, module: "reading" })}><Plus /> Create task</Button>} />
           ) : (
-            <ol className="grid gap-px border border-border bg-border">
+            <ol className="tiles">
               {draft.tasks.map((t, i) => (
                 <li key={t.id} className="flex flex-col gap-3 bg-white p-4 sm:flex-row sm:items-start">
                   <div className="flex items-center gap-2 sm:w-28 sm:flex-col sm:items-start">
@@ -189,7 +189,7 @@ export default function DayManagement() {
           )}
         </div>
 
-        <aside className="order-1 grid content-start gap-4 border border-border p-5 xl:order-2">
+        <aside className="surface order-1 grid content-start gap-4 p-5 xl:order-2">
           <SectionTitle>Day details</SectionTitle>
           <FormField label="Day title" htmlFor="d-title" required error={errors.title}>
             <Input id="d-title" value={draft.title} onChange={(e) => setField("title", e.target.value)} className={errors.title && "border-destructive"} />
@@ -197,7 +197,7 @@ export default function DayManagement() {
           <FormField label="Phase" htmlFor="d-phase" hint="Defaults: Day 1–20 Foundation, 21–40 Skill Development, 41–60 Exam Preparation">
             <SimpleSelect id="d-phase" value={draft.phase} onValueChange={(v) => setField("phase", v)} options={PHASES.map((p) => p.name)} />
           </FormField>
-          <div className="flex items-center justify-between border border-border p-3">
+          <div className="flex items-center justify-between rounded-lg border border-border p-3">
             <div>
               <Label htmlFor="d-pub">Published</Label>
               <p className="mt-0.5 text-xs text-muted-foreground">Visible to students in the daily plan</p>

@@ -18,7 +18,7 @@ const words = (t) => (t.trim() ? t.trim().split(/\s+/).length : 0);
 
 function QuestionLink({ module, book, test, part, count }) {
   return (
-    <Link to={`/questions?module=${module}&book=${book}&test=${test}&part=${part}`} className="inline-flex items-center gap-1.5 border border-border px-2 py-1 text-xs font-medium hover:border-ink">
+    <Link to={`/questions?module=${module}&book=${book}&test=${test}&part=${part}`} className="inline-flex items-center gap-1.5 rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium hover:bg-black/[0.09]">
       <ListChecks className="h-3.5 w-3.5" /> {count} question{count === 1 ? "" : "s"}
     </Link>
   );
@@ -44,12 +44,12 @@ function Preview({ tab, test, book, questions }) {
             </Button>
           ))}
         </div>
-        <div className="grid border border-border md:grid-cols-2">
+        <div className="grid overflow-hidden rounded-lg border border-border bg-white md:grid-cols-2">
           <div className="max-h-[52vh] overflow-y-auto border-b border-border p-5 scrollbar-thin md:border-b-0 md:border-r">
             <p className="label-xs">{tab === "reading" ? `Passage ${part}` : `Section ${part}`}</p>
             <h3 className="mt-1 text-lg font-semibold">{item?.title}</h3>
             {tab === "listening" && (
-              <div className="mt-3 border border-dashed border-ink bg-subtle p-3 text-xs">
+              <div className="mt-3 rounded-lg border border-[#0074E2]/20 bg-[#0074E2]/5 p-3 text-xs">
                 <p className="font-semibold">Sample audio slot: {item?.audioLabel}</p>
                 <p className="mt-0.5 text-muted-foreground">No recording is bundled in this demo — the student app plays clearly labelled sample audio.</p>
               </div>
@@ -64,7 +64,7 @@ function Preview({ tab, test, book, questions }) {
               <ol className="grid gap-4">
                 {qs.map((q, i) => (
                   <li key={q.id} className="text-sm">
-                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{questionTypeLabel(q.type)}</p>
+                    <p className="text-xs text-muted-foreground">{questionTypeLabel(q.type)}</p>
                     <p className="mt-1 font-medium">{i + 1}. {q.text}</p>
                     {q.options.length ? (
                       <div className="mt-2 grid gap-1">
@@ -94,11 +94,11 @@ function Preview({ tab, test, book, questions }) {
         <div className="mb-3 flex gap-1">
           {[1, 2].map((p) => <Button key={p} size="sm" variant={p === part ? "default" : "secondary"} onClick={() => setPart(p)}>Task {p}</Button>)}
         </div>
-        <div className="grid border border-border md:grid-cols-2">
+        <div className="grid overflow-hidden rounded-lg border border-border bg-white md:grid-cols-2">
           <div className="border-b border-border p-5 md:border-b-0 md:border-r">
             <p className="label-xs">Writing Task {part} · {part === 1 ? `Academic (${task.visual})` : "Essay"}</p>
             <p className="mt-3 whitespace-pre-line text-sm leading-7">{task.prompt}</p>
-            {part === 1 && <div className="mt-4 flex h-32 items-center justify-center border border-dashed border-border text-xs text-muted-foreground">[{task.visual} visual]</div>}
+            {part === 1 && <div className="mt-4 flex h-32 items-center justify-center rounded-lg border border-dashed border-input text-xs text-muted-foreground">[{task.visual} visual]</div>}
           </div>
           <div className="p-5">
             <Textarea value={essay} onChange={(e) => setEssay(e.target.value)} className="min-h-[220px]" placeholder="Students write their response here…" />
@@ -110,17 +110,17 @@ function Preview({ tab, test, book, questions }) {
   }
   return (
     <div className="grid gap-4">
-      <div className="border border-border p-5">
+      <div className="surface p-5">
         <p className="label-xs">Part 1 · Introduction and interview</p>
         <ol className="mt-3 grid gap-1.5 text-sm">{test.speaking.part1.map((q, i) => <li key={i}>{i + 1}. {q}</li>)}</ol>
       </div>
-      <div className="border-2 border-ink p-5">
+      <div className="surface-strong p-5">
         <p className="label-xs">Part 2 · Cue card · 1 min preparation, 2 min speaking</p>
         <p className="mt-3 font-semibold">{test.speaking.part2.cueCard}</p>
         <p className="mt-2 text-sm text-muted-foreground">You should say:</p>
         <ul className="mt-1 grid gap-1 text-sm">{test.speaking.part2.bullets.map((b, i) => <li key={i}>• {b}</li>)}</ul>
       </div>
-      <div className="border border-border p-5">
+      <div className="surface p-5">
         <p className="label-xs">Part 3 · Discussion</p>
         <ol className="mt-3 grid gap-1.5 text-sm">{test.speaking.part3.map((q, i) => <li key={i}>{i + 1}. {q}</li>)}</ol>
       </div>
@@ -219,7 +219,7 @@ export default function TestManagement() {
             <Button variant="secondary" size="icon" asChild>
               <Link to={testNo < 4 ? `/cambridge/${bookNo}/test/${testNo + 1}` : "#"} aria-label="Next test" className={testNo >= 4 ? "pointer-events-none opacity-40" : ""}><ChevronRight /></Link>
             </Button>
-            <div className="flex h-10 items-center gap-2 border border-border px-3">
+            <div className="flex h-10 items-center gap-2 rounded-lg border border-border px-3">
               <Label htmlFor="t-pub" className="text-xs">Published</Label>
               <Switch id="t-pub" checked={draft.published} onCheckedChange={(v) => setDraft({ ...draft, published: v })} />
             </div>
@@ -240,7 +240,7 @@ export default function TestManagement() {
 
         <TabsContent value="reading" className="grid gap-4">
           {draft.reading.map((r, i) => (
-            <div key={r.part} className="border border-border p-5">
+            <div key={r.part} className="surface p-5">
               <SectionTitle action={<QuestionLink module="reading" book={bookNo} test={testNo} part={r.part} count={countFor("reading", r.part)} />}>Passage {r.part}</SectionTitle>
               <div className="grid gap-4">
                 <FormField label="Title" required error={err(`reading-${r.part}-title`)}>
@@ -256,7 +256,7 @@ export default function TestManagement() {
 
         <TabsContent value="listening" className="grid gap-4">
           {draft.listening.map((s, i) => (
-            <div key={s.section} className="border border-border p-5">
+            <div key={s.section} className="surface p-5">
               <SectionTitle action={<QuestionLink module="listening" book={bookNo} test={testNo} part={s.section} count={countFor("listening", s.section)} />}>Section {s.section}</SectionTitle>
               <div className="grid gap-4 md:grid-cols-2">
                 <FormField label="Title" required error={err(`listening-${s.section}-title`)}>
@@ -274,7 +274,7 @@ export default function TestManagement() {
         </TabsContent>
 
         <TabsContent value="writing" className="grid gap-4">
-          <div className="border border-border p-5">
+          <div className="surface p-5">
             <SectionTitle>Writing Task 1 · Academic</SectionTitle>
             <div className="grid gap-4 md:grid-cols-[220px_1fr]">
               <FormField label="Visual type">
@@ -285,7 +285,7 @@ export default function TestManagement() {
               </FormField>
             </div>
           </div>
-          <div className="border border-border p-5">
+          <div className="surface p-5">
             <SectionTitle>Writing Task 2 · Essay</SectionTitle>
             <FormField label="Prompt" required error={err("task2")} hint={`${words(draft.writing.task2.prompt)} words`}>
               <Textarea value={draft.writing.task2.prompt} onChange={(e) => setNested(["writing", "task2", "prompt"], e.target.value)} className={`min-h-[120px] ${fieldClass("task2")}`} />
@@ -294,13 +294,13 @@ export default function TestManagement() {
         </TabsContent>
 
         <TabsContent value="speaking" className="grid gap-4 lg:grid-cols-3">
-          <div className="border border-border p-5">
+          <div className="surface p-5">
             <SectionTitle>Part 1 · Interview</SectionTitle>
             <FormField error={err("part1")}>
               <ListEditor items={draft.speaking.part1} onChange={(v) => setNested(["speaking", "part1"], v)} placeholder="Add a question" addLabel="Add" />
             </FormField>
           </div>
-          <div className="border border-border p-5">
+          <div className="surface p-5">
             <SectionTitle>Part 2 · Cue card</SectionTitle>
             <div className="grid gap-4">
               <FormField label="Cue card" required error={err("cue")}>
@@ -311,7 +311,7 @@ export default function TestManagement() {
               </FormField>
             </div>
           </div>
-          <div className="border border-border p-5">
+          <div className="surface p-5">
             <SectionTitle>Part 3 · Discussion</SectionTitle>
             <FormField error={err("part3")}>
               <ListEditor items={draft.speaking.part3} onChange={(v) => setNested(["speaking", "part3"], v)} placeholder="Add a question" addLabel="Add" />

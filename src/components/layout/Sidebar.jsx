@@ -31,10 +31,10 @@ export const NAV_GROUPS = [
 export function Logo() {
   return (
     <div className="flex items-center gap-2.5">
-      <span className="flex h-8 w-8 items-center justify-center bg-ink text-sm font-bold text-white">I</span>
+      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ink text-sm font-bold text-white">I</span>
       <div className="leading-tight">
         <p className="text-[15px] font-semibold tracking-tight">IELTSora</p>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Admin</p>
+        <p className="text-xs text-muted-foreground">Admin console</p>
       </div>
     </div>
   );
@@ -50,7 +50,7 @@ export default function Sidebar({ onNavigate, onLogout }) {
       <nav className="flex-1 overflow-y-auto px-3 py-4 scrollbar-thin">
         {NAV_GROUPS.map((g) => (
           <div key={g.label} className="mb-5">
-            <p className="label-xs mb-1.5 px-3">{g.label}</p>
+            <p className="label-xs mb-1 px-3">{g.label}</p>
             <ul className="grid gap-0.5">
               {g.items.map((item) => (
                 <li key={item.to}>
@@ -60,8 +60,8 @@ export default function Sidebar({ onNavigate, onLogout }) {
                     onClick={onNavigate}
                     className={({ isActive }) =>
                       cn(
-                        "flex items-center gap-3 border-l-2 px-3 py-2 text-sm transition-colors",
-                        isActive ? "border-ink bg-subtle font-semibold text-ink" : "border-transparent text-muted-foreground hover:bg-subtle hover:text-ink"
+                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                        isActive ? "bg-black/[0.06] font-semibold text-ink" : "text-muted-foreground hover:bg-black/[0.04] hover:text-ink"
                       )
                     }
                   >
@@ -76,12 +76,12 @@ export default function Sidebar({ onNavigate, onLogout }) {
       </nav>
       <div className="border-t border-border p-4">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center border border-ink text-xs font-semibold">AU</span>
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-black/[0.06] text-xs font-semibold">AU</span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium">{session?.name || "Admin"}</p>
             <p className="truncate text-xs text-muted-foreground">{session?.email}</p>
           </div>
-          <button onClick={onLogout} className="p-2 text-muted-foreground hover:text-ink" aria-label="Log out" title="Log out">
+          <button onClick={onLogout} className="rounded-md p-2 text-muted-foreground hover:bg-black/[0.05] hover:text-ink" aria-label="Log out" title="Log out">
             <LogOut className="h-4 w-4" />
           </button>
         </div>

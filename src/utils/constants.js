@@ -32,10 +32,14 @@ export const COUNTRIES = [
 ];
 
 export const CHART = {
-  ink: "#111111",
+  ink: "#1B1B1B",
   mid: "#737373",
   light: "#a3a3a3",
   faint: "#d4d4d4",
   grid: "#EDEDED",
-  palette: ["#111111", "#737373", "#a3a3a3", "#d4d4d4"],
+  primary: "#0171E3",
+  palette: ["#0171E3", "#EB6E00", "#6B1EFD", "#0B991F"],
 };
+/** Module colours (identical to the student website). */
+export const MODULE_COLORS = { reading: "#0171E3", listening: "#EB6E00", writing: "#6B1EFD", speaking: "#0B991F" };
+export const moduleColor = (keyOrLabel) => MODULE_COLORS[String(keyOrLabel).toLowerCase()] || CHART.primary;

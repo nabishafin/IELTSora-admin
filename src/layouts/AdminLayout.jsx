@@ -37,8 +37,8 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border lg:block">
+    <div className="min-h-screen bg-background">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-border bg-white lg:block">
         <Sidebar onLogout={() => setConfirmLogout(true)} />
       </aside>
 
@@ -49,7 +49,7 @@ export default function AdminLayout() {
       </Sheet>
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-border bg-white/95 px-4 backdrop-blur sm:px-6 lg:px-8">
+        <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-border bg-white/90 px-4 backdrop-blur sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(true)} aria-label="Open navigation">
               <Menu />
@@ -62,11 +62,11 @@ export default function AdminLayout() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden border border-dashed border-border px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground sm:inline">
+            <span className="hidden rounded-full bg-[#0074E2]/10 px-2.5 py-1 text-xs font-medium text-[#005fb8] sm:inline">
               Demo data · LocalStorage
             </span>
             <span className="hidden text-sm font-medium md:inline">{session?.name}</span>
-            <Button variant="secondary" size="sm" onClick={() => setConfirmLogout(true)}>
+            <Button variant="outline" size="sm" onClick={() => setConfirmLogout(true)}>
               <LogOut /> <span className="hidden sm:inline">Log out</span>
             </Button>
           </div>

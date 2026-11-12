@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, LineChart, Line } from "recharts";
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell, LineChart, Line } from "recharts";
 import { Users as UsersIcon, UserCheck, ListChecks, CheckCircle2, BookOpen, ClipboardCheck, Activity, ArrowRight } from "lucide-react";
 import PageHeader from "@/components/common/PageHeader";
 import { StatCard, ModuleBadge, SectionTitle, EmptyState } from "@/components/common/misc";
@@ -10,7 +10,7 @@ import { Progress, Badge } from "@/components/ui/form-controls";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/hooks/useLocalStorage";
 import { generateDailySeries, monthlyGrowth, modulePopularity, completionByPhase } from "@/data/mockAnalytics";
-import { CHART } from "@/utils/constants";
+import { CHART, moduleColor } from "@/utils/constants";
 import { formatDate, formatNumber, formatShortDate, timeAgo, pct, formatBand } from "@/utils/format";
 
 export default function Overview() {
@@ -65,13 +65,13 @@ export default function Overview() {
         }
       />
 
-      <div className="grid grid-cols-2 gap-px border border-border bg-border md:grid-cols-3 xl:grid-cols-6">
-        <StatCard className="border-0" label="Registered students" value={formatNumber(users.length)} hint={`${data.recentUsers.filter((u) => Date.now() - new Date(u.joinedAt) < 30 * 864e5).length} joined in 30 days`} icon={UsersIcon} />
-        <StatCard className="border-0" label="Active students" value={formatNumber(data.active)} hint={`${pct(data.active, users.length)}% of all accounts`} icon={UserCheck} />
-        <StatCard className="border-0" label="Daily plan tasks" value={formatNumber(data.totalTasks)} hint={`${publishedDays}/60 days published`} icon={ListChecks} />
-        <StatCard className="border-0" label="Tasks completed" value={formatNumber(data.completed)} hint={`${data.completionRate}% of all assigned tasks`} icon={CheckCircle2} />
-        <StatCard className="border-0" label="Cambridge sessions" value={formatNumber(data.cambridgeSessions)} hint={`${publishedTests}/48 tests published`} icon={BookOpen} />
-        <StatCard className="border-0" label="Mock tests" value={formatNumber(mockTests.length)} hint={`${mockTests.filter((m) => m.published).length} published`} icon={ClipboardCheck} />
+      <div className="grid grid-cols-2 tiles md:grid-cols-3 xl:grid-cols-6">
+        <StatCard className="rounded-none border-0 shadow-none" label="Registered students" value={formatNumber(users.length)} hint={`${data.recentUsers.filter((u) => Date.now() - new Date(u.joinedAt) < 30 * 864e5).length} joined in 30 days`} icon={UsersIcon} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Active students" value={formatNumber(data.active)} hint={`${pct(data.active, users.length)}% of all accounts`} icon={UserCheck} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Daily plan tasks" value={formatNumber(data.totalTasks)} hint={`${publishedDays}/60 days published`} icon={ListChecks} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Tasks completed" value={formatNumber(data.completed)} hint={`${data.completionRate}% of all assigned tasks`} icon={CheckCircle2} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Cambridge sessions" value={formatNumber(data.cambridgeSessions)} hint={`${publishedTests}/48 tests published`} icon={BookOpen} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Mock tests" value={formatNumber(mockTests.length)} hint={`${mockTests.filter((m) => m.published).length} published`} icon={ClipboardCheck} />
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-3">
@@ -83,7 +83,7 @@ export default function Overview() {
                 <XAxis dataKey="date" tickFormatter={formatShortDate} {...axisProps} minTickGap={24} />
                 <YAxis {...axisProps} allowDecimals={false} />
                 <Tooltip content={<ChartTooltip labelFormatter={formatDate} />} />
-                <Area type="monotone" dataKey="dau" name="Active users" stroke={CHART.ink} fill={CHART.ink} fillOpacity={0.06} strokeWidth={2} />
+                <Area type="monotone" dataKey="dau" name="Active users" stroke={CHART.primary} fill={CHART.primary} fillOpacity={0.1} strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -95,8 +95,8 @@ export default function Overview() {
                 <CartesianGrid stroke={CHART.grid} horizontal={false} />
                 <XAxis type="number" {...axisProps} allowDecimals={false} />
                 <YAxis type="category" dataKey="module" {...axisProps} width={72} />
-                <Tooltip content={<ChartTooltip />} cursor={{ fill: "#F7F7F7" }} />
-                <Bar dataKey="sessions" name="Sessions" fill={CHART.ink} barSize={18} />
+                <Tooltip content={<ChartTooltip />} cursor={{ fill: "#F5F5F5" }} />
+                <Bar dataKey="sessions" name="Sessions" barSize={18} radius={[0, 4, 4, 0]}>{data.popularity.map((r) => <Cell key={r.key} fill={moduleColor(r.key)} />)}</Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -112,13 +112,13 @@ export default function Overview() {
                 <XAxis dataKey="month" {...axisProps} />
                 <YAxis {...axisProps} allowDecimals={false} />
                 <Tooltip content={<ChartTooltip />} />
-                <Line type="monotone" dataKey="total" name="Total students" stroke={CHART.ink} strokeWidth={2} dot={{ r: 2.5, fill: CHART.ink }} />
-                <Line type="monotone" dataKey="added" name="New this month" stroke={CHART.light} strokeDasharray="4 3" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="total" name="Total students" stroke={CHART.palette[0]} strokeWidth={2} dot={{ r: 2.5, fill: CHART.palette[0] }} />
+                <Line type="monotone" dataKey="added" name="New this month" stroke={CHART.palette[1]} strokeDasharray="4 3" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </ChartCard>
-        <div className="border border-border p-5">
+        <div className="surface p-5">
           <SectionTitle>Completion by phase</SectionTitle>
           <div className="grid gap-5">
             {data.phases.map((p) => (
@@ -140,7 +140,7 @@ export default function Overview() {
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-2">
-        <div className="border border-border">
+        <div className="surface overflow-hidden">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <h3 className="text-[15px] font-semibold">Recent registrations</h3>
             <Link to="/users" className="inline-flex items-center gap-1 text-xs font-medium hover:underline">
@@ -178,7 +178,7 @@ export default function Overview() {
           )}
         </div>
 
-        <div className="border border-border">
+        <div className="surface overflow-hidden">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <h3 className="text-[15px] font-semibold">Recent student activity</h3>
             <span className="text-xs text-muted-foreground">Latest practice sessions</span>
@@ -189,7 +189,7 @@ export default function Overview() {
             <ul className="divide-y divide-border">
               {data.recentActivity.map((a) => (
                 <li key={a.id + a.user.id} className="flex items-center gap-3 px-5 py-3">
-                  <ModuleBadge module={a.module} className="w-[84px] justify-center" />
+                  <ModuleBadge module={a.module} className="w-[76px] justify-center" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm">
                       <Link to={`/users/${a.user.id}`} className="font-medium hover:underline">{a.user.name}</Link>

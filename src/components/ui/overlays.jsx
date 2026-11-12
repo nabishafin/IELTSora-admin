@@ -13,7 +13,7 @@ export const DialogClose = DialogPrimitive.Close;
 const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=open]:fade-in-0", className)}
+    className={cn("fixed inset-0 z-50 bg-black/40 data-[state=open]:animate-in data-[state=open]:fade-in-0", className)}
     {...props}
   />
 ));
@@ -26,13 +26,13 @@ export const DialogContent = React.forwardRef(({ className, children, ...props }
       ref={ref}
       aria-describedby={undefined}
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 grid max-h-[92vh] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto border border-ink bg-white p-6 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+        "fixed left-1/2 top-1/2 z-50 grid max-h-[92vh] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-xl border border-border bg-white p-6 shadow-high data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
         className
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 opacity-60 hover:opacity-100">
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-md p-1 opacity-60 hover:bg-black/5 hover:opacity-100">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
@@ -59,12 +59,12 @@ export const Sheet = DialogPrimitive.Root;
 export const SheetClose = DialogPrimitive.Close;
 export const SheetContent = React.forwardRef(({ className, children, side = "left", ...props }, ref) => (
   <DialogPrimitive.Portal>
-    <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+    <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
     <DialogPrimitive.Content
       ref={ref}
       aria-describedby={undefined}
       className={cn(
-        "fixed top-0 z-50 flex h-full w-[82%] max-w-xs flex-col bg-white data-[state=open]:animate-in data-[state=open]:duration-200",
+        "fixed top-0 z-50 flex h-full w-[82%] max-w-xs flex-col bg-white shadow-high data-[state=open]:animate-in data-[state=open]:duration-200",
         side === "left"
           ? "left-0 border-r border-border data-[state=open]:slide-in-from-left"
           : "right-0 border-l border-border data-[state=open]:slide-in-from-right",
@@ -74,7 +74,7 @@ export const SheetContent = React.forwardRef(({ className, children, side = "lef
     >
       <DialogPrimitive.Title className="sr-only">Navigation</DialogPrimitive.Title>
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 opacity-60 hover:opacity-100">
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-md p-1 opacity-60 hover:bg-black/5 hover:opacity-100">
         <X className="h-5 w-5" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
@@ -116,7 +116,7 @@ export const SelectTrigger = React.forwardRef(({ className, children, ...props }
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-10 w-full items-center justify-between gap-2 border border-border bg-white px-3 py-2 text-left text-sm focus:border-ink focus:outline-none disabled:opacity-50 [&>span]:line-clamp-1",
+      "flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-input bg-white px-3 py-2 text-left text-sm shadow-xs focus:border-ink focus:outline-none disabled:opacity-50 [&>span]:line-clamp-1",
       className
     )}
     {...props}
@@ -134,7 +134,7 @@ export const SelectContent = React.forwardRef(({ className, children, position =
       ref={ref}
       position={position}
       className={cn(
-        "relative z-[60] max-h-72 min-w-[8rem] overflow-y-auto border border-ink bg-white text-ink data-[state=open]:animate-in data-[state=open]:fade-in-0",
+        "relative z-[60] max-h-72 min-w-[8rem] overflow-y-auto rounded-lg border border-border bg-white text-ink shadow-med data-[state=open]:animate-in data-[state=open]:fade-in-0",
         position === "popper" && "w-full min-w-[var(--radix-select-trigger-width)] translate-y-1",
         className
       )}
@@ -149,7 +149,7 @@ export const SelectItem = React.forwardRef(({ className, children, ...props }, r
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-pointer select-none items-center py-2 pl-8 pr-2 text-sm outline-none focus:bg-subtle data-[disabled]:opacity-50",
+      "relative flex w-full cursor-pointer select-none items-center rounded-md py-2 pl-8 pr-2 text-sm outline-none focus:bg-subtle data-[disabled]:opacity-50",
       className
     )}
     {...props}
@@ -174,11 +174,11 @@ export function ConfirmDialog({ open, onOpenChange, title, description, confirmL
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         <DialogFooter>
-          <button className="h-10 border border-border px-5 text-sm font-medium hover:border-ink" onClick={() => onOpenChange(false)}>
+          <button className="h-9 rounded-lg border border-input bg-white px-4 text-sm font-medium shadow-xs hover:bg-subtle" onClick={() => onOpenChange(false)}>
             Cancel
           </button>
           <button
-            className={cn("h-10 px-5 text-sm font-medium text-white", destructive ? "bg-destructive hover:bg-red-800" : "bg-ink hover:bg-neutral-800")}
+            className={cn("h-9 rounded-lg px-4 text-sm font-medium text-white shadow-xs", destructive ? "bg-destructive hover:bg-red-800" : "bg-ink hover:bg-neutral-800")}
             onClick={() => {
               onConfirm?.();
               onOpenChange(false);

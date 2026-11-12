@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, LineChart, Line } from "recharts";
+import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, LineChart, Line } from "recharts";
 import { Pencil, Power, Trash2, Mail, MapPin, CalendarDays, Clock, UserX } from "lucide-react";
 import PageHeader from "@/components/common/PageHeader";
 import { StatCard, ModuleBadge, EmptyState, SimpleSelect, SectionTitle } from "@/components/common/misc";
@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/overlays";
 import { useToast } from "@/components/ui/toast";
 import { useStore } from "@/hooks/useLocalStorage";
-import { MODULES, CHART, phaseForDay, PHASES } from "@/utils/constants";
+import { MODULES, CHART, phaseForDay, PHASES, moduleColor } from "@/utils/constants";
 import { formatBand, formatDate, timeAgo, pct, formatShortDate } from "@/utils/format";
 
 const TYPE_LABEL = { cambridge: "Cambridge", "study-plan": "Study plan", mock: "Mock test" };
@@ -84,16 +84,16 @@ export default function UserDetails() {
         }
       />
 
-      <div className="grid grid-cols-2 gap-px border border-border bg-border lg:grid-cols-5">
-        <StatCard className="border-0" label="Current day" value={`${user.currentDay}/60`} hint={phase} />
-        <StatCard className="border-0" label="Completed tasks" value={user.completedTasks} hint={`${pct(user.completedTasks, 240)}% of 240`} />
-        <StatCard className="border-0" label="Estimated band" value={formatBand(user.estimatedBand)} hint={`Target ${formatBand(user.targetBand)}`} />
-        <StatCard className="border-0" label="Practice sessions" value={history.length} hint={`${totalMinutes} minutes logged`} />
-        <StatCard className="border-0 col-span-2 lg:col-span-1" label="Gap to target" value={user.targetBand - user.estimatedBand > 0 ? `−${(user.targetBand - user.estimatedBand).toFixed(1)}` : "On track"} />
+      <div className="grid grid-cols-2 tiles lg:grid-cols-5">
+        <StatCard className="rounded-none border-0 shadow-none" label="Current day" value={`${user.currentDay}/60`} hint={phase} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Completed tasks" value={user.completedTasks} hint={`${pct(user.completedTasks, 240)}% of 240`} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Estimated band" value={formatBand(user.estimatedBand)} hint={`Target ${formatBand(user.targetBand)}`} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Practice sessions" value={history.length} hint={`${totalMinutes} minutes logged`} />
+        <StatCard className="rounded-none border-0 shadow-none col-span-2 lg:col-span-1" label="Gap to target" value={user.targetBand - user.estimatedBand > 0 ? `−${(user.targetBand - user.estimatedBand).toFixed(1)}` : "On track"} />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="border border-border p-5">
+        <div className="surface p-5">
           <SectionTitle>60-day progress</SectionTitle>
           <p className="text-3xl font-semibold tabular-nums">{pct(user.currentDay - 1, 60)}%</p>
           <Progress value={pct(user.currentDay - 1, 60)} className="mt-3" />
@@ -122,15 +122,15 @@ export default function UserDetails() {
                 <CartesianGrid {...gridProps} />
                 <XAxis dataKey="module" {...axisProps} />
                 <YAxis domain={[0, 9]} ticks={[0, 3, 5, 7, 9]} {...axisProps} />
-                <Tooltip content={<ChartTooltip formatter={(v) => formatBand(v)} />} cursor={{ fill: "#F7F7F7" }} />
+                <Tooltip content={<ChartTooltip formatter={(v) => formatBand(v)} />} cursor={{ fill: "#F5F5F5" }} />
                 <ReferenceLine y={user.targetBand} stroke={CHART.mid} strokeDasharray="4 3" label={{ value: `Target ${formatBand(user.targetBand)}`, position: "insideTopRight", fontSize: 10, fill: CHART.mid }} />
-                <Bar dataKey="band" name="Band" fill={CHART.ink} barSize={32} />
+                <Bar dataKey="band" name="Band" barSize={32} radius={[4, 4, 0, 0]}>{perf.map((p) => <Cell key={p.key} fill={moduleColor(p.key)} />)}</Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
         </ChartCard>
 
-        <ChartCard title="Score trend" description="Practice session scores over time" legend={<ChartLegend items={[{ label: "Session score", color: CHART.ink }, { label: "Target", color: CHART.mid, dashed: true }]} />}>
+        <ChartCard title="Score trend" description="Practice session scores over time" legend={<ChartLegend items={[{ label: "Session score", color: CHART.primary }, { label: "Target", color: CHART.mid, dashed: true }]} />}>
           {trend.length < 2 ? (
             <EmptyState className="mx-3 my-6" title="Not enough sessions" description="A trend appears after two practice sessions." />
           ) : (
@@ -142,7 +142,7 @@ export default function UserDetails() {
                   <YAxis domain={[3, 9]} {...axisProps} />
                   <Tooltip content={<ChartTooltip labelFormatter={formatDate} formatter={(v) => formatBand(v)} />} />
                   <ReferenceLine y={user.targetBand} stroke={CHART.mid} strokeDasharray="4 3" />
-                  <Line type="monotone" dataKey="score" name="Score" stroke={CHART.ink} strokeWidth={2} dot={{ r: 3, fill: CHART.ink }} />
+                  <Line type="monotone" dataKey="score" name="Score" stroke={CHART.primary} strokeWidth={2} dot={{ r: 3, fill: CHART.primary }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -150,7 +150,7 @@ export default function UserDetails() {
         </ChartCard>
       </div>
 
-      <div className="mt-6 border border-border">
+      <div className="surface mt-6 overflow-hidden">
         <div className="flex flex-col gap-3 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-[15px] font-semibold">Practice history</h3>

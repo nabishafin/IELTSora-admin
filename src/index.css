@@ -5,15 +5,21 @@
 @layer base {
   * { @apply border-border; }
   html { -webkit-font-smoothing: antialiased; }
-  body { @apply bg-white text-ink font-sans; }
-  ::selection { background: #111; color: #fff; }
-  input, textarea, select, button { border-radius: 0; }
+  body { @apply bg-background text-ink font-sans text-sm; }
+  ::selection { background: #1b1b1b; color: #fff; }
+  :focus-visible { outline: 2px solid #1b1b1b; outline-offset: 2px; }
 }
 
 @layer components {
-  .label-xs { @apply text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground; }
+  /* Astryx-style surfaces: white card on the gray page, 16px container radius. */
+  .surface { @apply rounded-xl border border-border bg-white shadow-xs; }
+  .surface-strong { @apply rounded-xl border border-black/15 bg-white shadow-low; }
+  /* Tile grid: children separated by 1px hairlines inside one rounded card. */
+  .tiles { @apply grid gap-px overflow-hidden rounded-xl border border-border bg-border shadow-xs; }
+  .tiles > * { @apply bg-white; }
+  .label-xs { @apply text-xs font-medium text-muted-foreground; }
   .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: #d4d4d4; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 9999px; }
   .passage p { @apply mb-4 leading-7 text-[15px]; }
-  mark.hl { background: #FDE68A; color: inherit; padding: 0 1px; }
+  mark.hl { background: #FDE68A; color: inherit; padding: 0 1px; border-radius: 3px; }
 }

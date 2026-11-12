@@ -6,12 +6,12 @@ import { moduleLabel } from "@/utils/constants";
 
 export function StatCard({ label, value, hint, icon: Icon, className }) {
   return (
-    <div className={cn("border border-border bg-white p-5", className)}>
+    <div className={cn("surface p-5", className)}>
       <div className="flex items-start justify-between gap-3">
         <p className="label-xs">{label}</p>
         {Icon && <Icon className="h-4 w-4 text-muted-foreground" />}
       </div>
-      <p className="mt-3 text-[28px] font-semibold leading-none tracking-tight tabular-nums">{value}</p>
+      <p className="mt-3 text-[26px] font-semibold leading-none tracking-tight tabular-nums">{value}</p>
       {hint && <p className="mt-2 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
@@ -19,8 +19,8 @@ export function StatCard({ label, value, hint, icon: Icon, className }) {
 
 export function EmptyState({ icon: Icon = Inbox, title, description, action, className }) {
   return (
-    <div className={cn("flex flex-col items-center justify-center border border-dashed border-border px-6 py-14 text-center", className)}>
-      <Icon className="h-6 w-6 text-muted-foreground" />
+    <div className={cn("flex flex-col items-center justify-center rounded-xl border border-dashed border-input bg-white/60 px-6 py-14 text-center", className)}>
+      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-black/[0.05]"><Icon className="h-5 w-5 text-muted-foreground" /></span>
       <p className="mt-3 text-sm font-semibold">{title}</p>
       {description && <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
@@ -76,32 +76,33 @@ export function SimpleSelect({ value, onValueChange, options, placeholder = "Sel
 export function StatusDot({ on, onLabel = "Published", offLabel = "Draft" }) {
   return (
     <span className="inline-flex items-center gap-1.5 text-xs font-medium">
-      <span className={cn("h-1.5 w-1.5 rounded-full", on ? "bg-success" : "bg-neutral-300")} />
+      <span className={cn("h-2 w-2 rounded-full", on ? "bg-[#198100]" : "bg-neutral-300")} />
       <span className={on ? "text-ink" : "text-muted-foreground"}>{on ? onLabel : offLabel}</span>
     </span>
   );
 }
 
+/* Module colours — must match the student website exactly. */
 const MODULE_STYLE = {
-  reading: "border-ink bg-ink text-white",
-  listening: "border-ink bg-white text-ink",
-  writing: "border-neutral-400 bg-neutral-100 text-ink",
-  speaking: "border-dashed border-ink bg-white text-ink",
+  reading: "bg-[#0171E3]/10 text-[#0171E3]",
+  listening: "bg-[#EB6E00]/10 text-[#EB6E00]",
+  writing: "bg-[#6B1EFD]/10 text-[#6B1EFD]",
+  speaking: "bg-[#0B991F]/10 text-[#0B991F]",
 };
 
 export function ModuleBadge({ module, className }) {
-  return <span className={cn("inline-flex items-center border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide", MODULE_STYLE[module], className)}>{moduleLabel(module)}</span>;
+  return <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold", MODULE_STYLE[module], className)}>{moduleLabel(module)}</span>;
 }
 
 export function DifficultyBadge({ difficulty }) {
-  const variant = difficulty === "Hard" ? "default" : difficulty === "Medium" ? "outline" : "muted";
+  const variant = difficulty === "Hard" ? "danger" : difficulty === "Medium" ? "warning" : "success";
   return <Badge variant={variant}>{difficulty}</Badge>;
 }
 
 export function SectionTitle({ children, action, className }) {
   return (
     <div className={cn("mb-3 flex items-center justify-between gap-3", className)}>
-      <h2 className="text-sm font-semibold uppercase tracking-[0.1em]">{children}</h2>
+      <h2 className="text-base font-semibold tracking-tight">{children}</h2>
       {action}
     </div>
   );

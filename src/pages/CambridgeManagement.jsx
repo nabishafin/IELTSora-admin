@@ -62,7 +62,7 @@ function BookForm({ open, onOpenChange, initial, existingNumbers, onSubmit }) {
           <FormField label="Description" htmlFor="b-desc" required error={errors.description}>
             <Textarea id="b-desc" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={errors.description && "border-destructive"} />
           </FormField>
-          <div className="flex items-center justify-between border border-border p-3">
+          <div className="flex items-center justify-between rounded-lg border border-border p-3">
             <Label htmlFor="b-pub">Published</Label>
             <Switch id="b-pub" checked={form.published} onCheckedChange={(v) => setForm({ ...form, published: v })} />
           </div>
@@ -127,15 +127,15 @@ export default function CambridgeManagement() {
         actions={<Button onClick={() => setForm({ initial: null })}><Plus /> Add book</Button>}
       />
 
-      <div className="mb-6 grid grid-cols-2 gap-px border border-border bg-border lg:grid-cols-4">
-        <StatCard className="border-0" label="Books" value={books.length} hint={`${books.filter((b) => b.published).length} published`} />
-        <StatCard className="border-0" label="Tests" value={books.length * 4} hint={`${testsPublished} published`} />
-        <StatCard className="border-0" label="Reading passages" value={books.length * 12} />
-        <StatCard className="border-0" label="Listening sections" value={books.length * 16} />
+      <div className="mb-6 grid grid-cols-2 tiles lg:grid-cols-4">
+        <StatCard className="rounded-none border-0 shadow-none" label="Books" value={books.length} hint={`${books.filter((b) => b.published).length} published`} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Tests" value={books.length * 4} hint={`${testsPublished} published`} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Reading passages" value={books.length * 12} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Listening sections" value={books.length * 16} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-        <div className="border border-border">
+        <div className="surface overflow-hidden">
           <div className="grid gap-2 border-b border-border p-3">
             <SearchInput value={query} onChange={setQuery} placeholder="Search books…" />
             <SimpleSelect value={status} onValueChange={setStatus} options={[{ value: "all", label: "All books" }, { value: "published", label: "Published" }, { value: "draft", label: "Unpublished" }]} />
@@ -143,14 +143,14 @@ export default function CambridgeManagement() {
           {filtered.length === 0 ? (
             <EmptyState className="m-3" icon={Library} title="No books found" />
           ) : (
-            <ul className="max-h-[560px] overflow-y-auto scrollbar-thin">
+            <ul className="grid max-h-[560px] gap-0.5 overflow-y-auto p-2 scrollbar-thin">
               {filtered.map((b) => (
                 <li key={b.id}>
                   <button
                     onClick={() => setSelected(b.number)}
-                    className={cn("flex w-full items-center gap-3 border-b border-l-2 border-border px-4 py-3 text-left transition-colors", active?.number === b.number ? "border-l-ink bg-subtle" : "border-l-transparent hover:bg-subtle")}
+                    className={cn("flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors", active?.number === b.number ? "bg-black/[0.06]" : "hover:bg-black/[0.04]")}
                   >
-                    <span className="flex h-10 w-8 shrink-0 items-center justify-center bg-ink text-xs font-bold text-white">{b.number}</span>
+                    <span className="flex h-10 w-8 shrink-0 items-center justify-center rounded-md bg-ink text-xs font-bold text-white">{b.number}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-medium">{b.title}</span>
                       <span className="block text-xs text-muted-foreground">{b.year} · {b.tests.filter((t) => t.published).length}/4 tests live</span>
@@ -165,10 +165,10 @@ export default function CambridgeManagement() {
 
         {active ? (
           <div>
-            <div className="border border-border p-5">
+            <div className="surface p-5">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex gap-4">
-                  <div className="flex h-24 w-16 shrink-0 flex-col justify-between bg-ink p-2 text-white">
+                  <div className="flex h-24 w-16 shrink-0 flex-col justify-between rounded-lg bg-ink p-2 text-white shadow-low">
                     <BookOpen className="h-4 w-4" />
                     <span className="text-2xl font-bold leading-none">{active.number}</span>
                   </div>
@@ -179,7 +179,7 @@ export default function CambridgeManagement() {
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  <div className="flex items-center gap-2 border border-border px-3 py-2">
+                  <div className="flex items-center gap-2 rounded-lg border border-border px-3 py-2">
                     <Label htmlFor="bk-pub" className="text-xs">Published</Label>
                     <Switch
                       id="bk-pub"
@@ -196,7 +196,7 @@ export default function CambridgeManagement() {
               </div>
             </div>
 
-            <div className="mt-4 grid gap-px border border-border bg-border md:grid-cols-2">
+            <div className="mt-4 tiles md:grid-cols-2">
               {active.tests.map((t) => (
                 <div key={t.testNo} className="flex flex-col bg-white p-5">
                   <div className="flex items-start justify-between gap-3">

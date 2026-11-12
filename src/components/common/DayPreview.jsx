@@ -40,11 +40,11 @@ export default function DayPreview({ day }) {
         </div>
       )}
       {missing.length > 0 && (
-        <p className="border border-amber-600/30 bg-amber-50 px-3 py-2 text-xs text-amber-900">Missing required module task(s): {missing.join(", ")}.</p>
+        <p className="rounded-lg border border-amber-600/30 bg-amber-50 px-3 py-2 text-xs text-amber-900">Missing required module task(s): {missing.join(", ")}.</p>
       )}
       <div className="grid gap-3 sm:grid-cols-2">
         {day.tasks.map((t) => (
-          <div key={t.id} className="border border-border p-4">
+          <div key={t.id} className="rounded-lg border border-border p-4">
             <div className="flex items-center justify-between gap-2">
               <ModuleBadge module={t.module} />
               <span className="text-xs tabular-nums text-muted-foreground">{t.duration} min</span>
@@ -60,7 +60,7 @@ export default function DayPreview({ day }) {
             </ul>
             <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
               <DifficultyBadge difficulty={t.difficulty} />
-              <span className="h-8 bg-ink px-3 text-xs font-medium leading-8 text-white">Start practice</span>
+              <span className="h-8 rounded-md bg-ink px-3 text-xs font-medium leading-8 text-white">Start practice</span>
             </div>
           </div>
         ))}

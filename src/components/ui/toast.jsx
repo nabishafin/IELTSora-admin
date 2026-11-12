@@ -27,8 +27,8 @@ export function ToastProvider({ children }) {
               key={t.id}
               role="status"
               className={cn(
-                "flex items-start gap-3 border bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.08)] animate-fade-in",
-                t.variant === "error" ? "border-red-700" : "border-ink"
+                "flex items-start gap-3 rounded-xl border bg-white p-4 shadow-high animate-fade-in",
+                t.variant === "error" ? "border-red-700/40" : "border-border"
               )}
             >
               <I className={cn("mt-0.5 h-4 w-4 shrink-0", t.variant === "error" && "text-red-700", t.variant === "success" && "text-green-700")} />
