@@ -62,7 +62,7 @@ export default function AdminLayout() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden rounded-full bg-[#4F74A8]/10 px-2.5 py-1 text-xs font-medium text-[#005fb8] sm:inline">
+            <span className="hidden rounded bg-[#4F74A8]/10 px-2.5 py-1 text-xs font-medium text-[#005fb8] sm:inline">
               Demo data · LocalStorage
             </span>
             <span className="hidden text-sm font-medium md:inline">{session?.name}</span>

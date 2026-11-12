@@ -134,7 +134,7 @@ export default function QuestionManagement() {
           {activeFilters.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               {activeFilters.map((k) => (
-                <button key={k} onClick={() => setFilter(k, "all")} className="inline-flex items-center gap-1 rounded-full bg-black/[0.06] px-2.5 py-0.5 text-xs font-medium hover:bg-black/[0.1]">
+                <button key={k} onClick={() => setFilter(k, "all")} className="inline-flex items-center gap-1 rounded bg-black/[0.06] px-2.5 py-0.5 text-xs font-medium hover:bg-black/[0.1]">
                   {k}: {k === "type" ? questionTypeLabel(f[k]) : f[k]} <X className="h-3 w-3" />
                 </button>
               ))}

@@ -18,7 +18,7 @@ const words = (t) => (t.trim() ? t.trim().split(/\s+/).length : 0);
 
 function QuestionLink({ module, book, test, part, count }) {
   return (
-    <Link to={`/questions?module=${module}&book=${book}&test=${test}&part=${part}`} className="inline-flex items-center gap-1.5 rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium hover:bg-black/[0.09]">
+    <Link to={`/questions?module=${module}&book=${book}&test=${test}&part=${part}`} className="inline-flex items-center gap-1.5 rounded bg-black/[0.05] px-2.5 py-1 text-xs font-medium hover:bg-black/[0.09]">
       <ListChecks className="h-3.5 w-3.5" /> {count} question{count === 1 ? "" : "s"}
     </Link>
   );

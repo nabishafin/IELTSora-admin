@@ -134,7 +134,7 @@ export default function ModuleManagement() {
             <p className="mt-1 text-sm text-muted-foreground">{draft.description}</p>
             <div className="mt-4 rounded-lg bg-subtle p-3 text-sm">{draft.instructions}</div>
             <div className="mt-4 flex flex-wrap gap-1.5">
-              {draft.categories.map((c, i) => <span key={i} className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs">{c}</span>)}
+              {draft.categories.map((c, i) => <span key={i} className="rounded bg-black/[0.05] px-2.5 py-1 text-xs">{c}</span>)}
             </div>
           </div>
         </aside>

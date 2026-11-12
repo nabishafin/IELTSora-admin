@@ -54,7 +54,7 @@ export default function VocabularyEditor({ vocabulary, onChange, onReset, highli
         </div>
         <div className="flex items-center gap-2">
           <span
-            className={cn("rounded-full px-2.5 py-1 text-xs font-semibold tabular-nums", !complete && "bg-amber-100 text-amber-900")}
+            className={cn("rounded px-2.5 py-1 text-xs font-semibold tabular-nums", !complete && "bg-amber-100 text-amber-900")}
             style={complete ? { background: `${VOCAB_COLOR}1A`, color: VOCAB_COLOR } : undefined}
           >
             {words.length} / {VOCAB_TARGET}
