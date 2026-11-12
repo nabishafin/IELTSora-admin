@@ -10,15 +10,26 @@ import { MODULE_KEYS, PHASES } from "@/utils/constants";
 export const CONTENT_FORMAT = "ieltsora-content-v1";
 const PHASE_NAMES = PHASES.map((p) => p.name);
 
-const sanitizeTask = (t) => ({
-  id: String(t.id),
-  module: t.module,
-  title: t.title,
-  source: t.source && t.source.book ? { book: Number(t.source.book), test: Number(t.source.test), part: t.source.part === null || t.source.part === undefined || t.source.part === "" ? null : Number(t.source.part) } : null,
-  steps: Array.isArray(t.steps) ? t.steps.filter(Boolean).map(String) : [],
-  duration: Number(t.duration) || 0,
-  difficulty: t.difficulty,
-});
+/** Source part: a number, or "full" for a complete reading/listening test (null/"" are treated as "full"). */
+const sanitizePart = (part) => {
+  if (part === null || part === undefined || part === "" || part === "full") return "full";
+  const n = Number(part);
+  return Number.isFinite(n) && n > 0 ? n : "full";
+};
+
+const sanitizeTask = (t) => {
+  const out = {
+    id: String(t.id),
+    module: t.module,
+    title: t.title,
+    source: t.source && t.source.book ? { book: Number(t.source.book), test: Number(t.source.test), part: sanitizePart(t.source.part) } : null,
+    steps: Array.isArray(t.steps) ? t.steps.filter(Boolean).map(String) : [],
+    duration: Number(t.duration) || 0,
+    difficulty: t.difficulty,
+  };
+  if (t.practice && typeof t.practice === "object") out.practice = { ...t.practice };
+  return out;
+};
 
 const sanitizeDay = (d) => ({
   day: Number(d.day),
