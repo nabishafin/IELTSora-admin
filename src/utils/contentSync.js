@@ -6,6 +6,7 @@
  */
 import { getStore, setStore } from "@/utils/storage";
 import { MODULE_KEYS, PHASES } from "@/utils/constants";
+import { sanitizeCambridge, validateCambridge } from "@/utils/cambridgeContent";
 
 export const CONTENT_FORMAT = "ieltsora-content-v1";
 const PHASE_NAMES = PHASES.map((p) => p.name);
@@ -77,6 +78,7 @@ export function buildContentExport() {
     exportedAt: new Date().toISOString(),
     studyPlan: getStore("studyPlan").map(sanitizeDay).sort((a, b) => a.day - b.day),
     homepage: sanitizeHomepage(getStore("homepage")),
+    cambridge: sanitizeCambridge(getStore("cambridge")),
     settings: { allowFutureDays: Boolean(settings?.studyPlan?.allowFutureDays) },
   };
 }
@@ -114,6 +116,7 @@ export function validateContent(data) {
       }
     });
   if (!data.homepage || typeof data.homepage !== "object") errors.push("homepage is missing.");
+  errors.push(...validateCambridge(data.cambridge));
   return errors.slice(0, 6);
 }
 
@@ -121,6 +124,7 @@ export function validateContent(data) {
 export function applyContentImport(data) {
   setStore("studyPlan", data.studyPlan.map(sanitizeDay).sort((a, b) => a.day - b.day));
   setStore("homepage", sanitizeHomepage(data.homepage));
+  if (Array.isArray(data.cambridge)) setStore("cambridge", sanitizeCambridge(data.cambridge));
   if (data.settings && typeof data.settings.allowFutureDays === "boolean") {
     const s = getStore("settings");
     setStore("settings", { ...s, studyPlan: { ...s.studyPlan, allowFutureDays: data.settings.allowFutureDays } });

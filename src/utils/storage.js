@@ -5,12 +5,7 @@
  * (through the hooks in src/hooks), so swapping it for a REST/GraphQL client
  * later only requires changing the functions below.
  */
-import { generateUsers } from "@/data/mockUsers";
 import { generateStudyPlan } from "@/data/mockStudyPlan";
-import { generateCambridgeLibrary } from "@/data/mockCambridge";
-import { generateQuestions } from "@/data/mockQuestions";
-import { generateMockTests } from "@/data/mockTests";
-import { generateModules } from "@/data/mockModules";
 import { defaultHomepage } from "@/data/mockHomepage";
 import { defaultSettings } from "@/data/mockSettings";
 import { getDayVocabulary } from "@/data/vocabulary";
@@ -22,12 +17,9 @@ export const CHANGE_EVENT = "ieltsora-admin-storage";
 const clone = (v) => JSON.parse(JSON.stringify(v));
 
 export const STORES = {
-  users: { key: `${PREFIX}users`, seed: generateUsers },
   studyPlan: { key: `${PREFIX}study_plan`, seed: generateStudyPlan },
-  cambridge: { key: `${PREFIX}cambridge`, seed: generateCambridgeLibrary },
-  questions: { key: `${PREFIX}questions`, seed: generateQuestions },
-  mockTests: { key: `${PREFIX}mock_tests`, seed: generateMockTests },
-  modules: { key: `${PREFIX}modules`, seed: generateModules },
+  // Uploaded Cambridge Reading passages / Listening sections (see utils/cambridgeContent.js).
+  cambridge: { key: `${PREFIX}cambridge_content`, seed: () => [] },
   homepage: { key: `${PREFIX}homepage`, seed: () => clone(defaultHomepage) },
   settings: { key: `${PREFIX}settings`, seed: () => clone(defaultSettings) },
 };

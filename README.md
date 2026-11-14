@@ -1,6 +1,6 @@
 # IELTSora Admin Dashboard
 
-The content and platform management app for IELTSora, an IELTS preparation platform. It is a standalone React + Vite app, completely separate from the student website (`../IELTSora`), with its own dependencies, routing, layout, components and mock data.
+The content app for the IELTSora student website, an IELTS preparation platform. It is a standalone React + Vite app, completely separate from the student website (`../IELTSora`), with its own dependencies, routing, layout, components and mock data.
 
 > **Demo only.** There is no backend. Every piece of data is mock data held in this browser's LocalStorage. Login is **demonstration authentication** checked in the browser. It is not production security.
 
@@ -23,20 +23,15 @@ The login page has a **Fill demo credentials** button. Every admin route is prot
 
 ## Features
 
+The admin only contains pages whose content reaches the student website.
+
 | Area | Route | What you can do |
 |---|---|---|
-| Overview | `/` | KPIs (students, active, daily tasks, completed tasks, Cambridge sessions, mock tests), DAU, student growth, popular modules, completion by phase, recent registrations and activity |
-| Students | `/users`, `/users/:id` | Search, filter (status/phase/country), sort, paginate, export CSV, add/edit/delete students, activate or deactivate with confirmation, and view a profile with module performance, score trend and paginated practice history |
-| 60-Day Plan | `/study-plan` | All 60 days in grid or table view, filters, per-day and per-phase publish/unpublish, student preview, reset to default, content export/import |
-| Day editor | `/study-plan/:day` | Edit title, phase, objectives and publish state; manage the day’s 20 vocabulary words (theme, word, part of speech, meaning, example; add/edit/reorder/delete; reset to default — a day can only be published with exactly 20 complete, unique words); create, edit, delete and reorder tasks (module, Cambridge book/test/part or full test, steps, duration, difficulty); four-module check (a published day must have all four); preview; previous/next day with an unsaved-changes guard |
-| Cambridge Library | `/cambridge` | Books 10–21: add/edit/delete books, publish books and tests |
-| Test editor | `/cambridge/:book/test/:n` | Reading passages 1–3, Listening sections 1–4, Writing Task 1/2 and Speaking Parts 1–3; publish toggle; student-style preview; per-part question counts that link into the bank |
-| Question Bank | `/questions` | Create, edit, duplicate and delete questions with validation. Selection cascades module → book → test → part → type. Covers all 12 Reading types plus Form Completion and Map Labelling for Listening, with custom or fixed options, answer key, explanation and marks. Filters live in the URL (`?module=&book=&test=&part=&type=`) |
-| Mock Tests | `/mock-tests` | Create, edit, duplicate and delete tests; choose modules and per-module durations; pick questions from the bank; scoring by band map or by marks with a pass mark; a timed, interactive preview that scores answers; publish toggle |
-| Modules | `/modules` | Visibility, description, student instructions and practice categories for Reading, Listening, Writing and Speaking |
-| Homepage | `/homepage` | Hero, CTAs, features, testimonials, FAQs and footer (add/remove/reorder) with a live preview |
-| Analytics | `/analytics` | 7/30/90-day range: DAU, student growth, task completion, Reading and Listening score trends, module popularity, average scores, study-plan completion by day and by phase, CSV export |
-| Settings | `/settings` | Admin profile, platform defaults (including the default target band), study plan rules, default task durations, mock notifications, content export/import, reset all data |
+| 60-Day Plan | `/study-plan` (also `/`) | All 60 days in grid or table view, filters, per-day and per-phase publish/unpublish, student preview, reset to default, content export/import |
+| Day editor | `/study-plan/:day` | Title, phase, objectives, publish state; the day's 20 vocabulary words; module tasks with their Cambridge book/test/part, steps, duration and difficulty; preview; previous/next day |
+| Cambridge Practice | `/cambridge`, `/cambridge/:book/:test/:module/:part` | Upload Book 10–21 · Test 1–4 content in one format: Reading passages 1–3 and Listening sections 1–4 (text or audio link, transcript, question groups with answers), Writing tasks 1–2 (prompt, chart image link) and Speaking parts 1–3 (questions, cue card). Parts not uploaded keep the website’s built-in sample |
+| Homepage | `/homepage` | Hero, CTAs, features, testimonials, FAQs and footer with a live preview |
+| Settings | `/settings` | "Open all days" switch (sent to the website), default task durations, export/import, reset all data |
 
 ## Data storage
 
@@ -45,14 +40,10 @@ All data lives in LocalStorage under the `ieltsora_admin_` prefix. Each store is
 | Key | Contents |
 |---|---|
 | `ieltsora_admin_session` | Demo login session |
-| `ieltsora_admin_users` | 40 mock students with practice history |
 | `ieltsora_admin_study_plan` | 60 days × 4 module tasks + 20 vocabulary words (older stored plans are migrated on read) |
-| `ieltsora_admin_cambridge` | Books 10–21, Tests 1–4, all parts |
-| `ieltsora_admin_questions` | Question bank |
-| `ieltsora_admin_mock_tests` | Mock tests |
-| `ieltsora_admin_modules` | Module configuration |
+| `ieltsora_admin_cambridge_content` | Uploaded Cambridge parts (see `src/utils/cambridgeContent.js` for the format) |
 | `ieltsora_admin_homepage` | Public homepage content |
-| `ieltsora_admin_settings` | Platform settings |
+| `ieltsora_admin_settings` | "Open all days" and default task durations |
 
 Pages read and write data only through `src/hooks/useLocalStorage.js` and `src/utils/storage.js`. To connect a real API later, replace those functions.
 
@@ -80,6 +71,7 @@ File format (`format: "ieltsora-content-v1"`):
     }],
     "vocabulary": { "theme": "Education", "words": [{ "word": "curriculum", "pos": "noun | verb | adjective | adverb | phrase", "meaning": "…", "example": "…" }] } /* 20 words, or null */
   }],
+  "cambridge": [{ "book": 21, "test": 1, "module": "reading | listening | writing | speaking", "part": 1, "content": { } }] /* optional; format in src/utils/cambridgeContent.js */,
   "homepage": { "heroTitle", "heroDescription", "primaryCta", "secondaryCta", "features", "testimonials", "faqs", "footer" },
   "settings": { "allowFutureDays": false }
 }
@@ -92,13 +84,11 @@ The same file can be imported back into the admin app, and it is validated befor
 ```text
 src/
 ├── components/
-│   ├── analytics/   ChartCard, tooltip, legend, axis presets (grayscale Recharts)
-│   ├── common/      PageHeader, StatCard, EmptyState, SearchInput, badges, DayPreview
-│   ├── forms/       StudentForm, TaskForm, QuestionForm, ListEditor
+│   ├── common/      PageHeader, badges, DayPreview
+│   ├── forms/       TaskForm, VocabularyEditor, ListEditor
 │   ├── layout/      Sidebar
-│   ├── tables/      Pagination, SortableHead
-│   └── ui/          shadcn/ui-style primitives (0px radius, black & white)
-├── data/            mock data generators (users, study plan, Cambridge, questions, tests…)
+│   └── ui/          shadcn/ui-style primitives
+├── data/            default study plan, homepage, settings, vocabulary
 ├── hooks/           useAuth (demo auth), useLocalStorage / useStore
 ├── layouts/         AdminLayout (desktop sidebar + mobile drawer)
 ├── pages/           one file per route

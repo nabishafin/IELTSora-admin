@@ -1,31 +1,19 @@
 import { NavLink } from "react-router-dom";
-import {
-  LayoutDashboard, Users, CalendarDays, BookOpen, ListChecks, ClipboardCheck, Layers, Home, BarChart3, Settings, LogOut,
-} from "lucide-react";
+import { CalendarDays, BookOpen, Home, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 
+/** Only pages whose content reaches the student website. */
 export const NAV_GROUPS = [
   {
-    label: "General",
+    label: "Website content",
     items: [
-      { to: "/", label: "Overview", icon: LayoutDashboard, end: true },
-      { to: "/users", label: "Students", icon: Users },
-      { to: "/analytics", label: "Analytics", icon: BarChart3 },
-    ],
-  },
-  {
-    label: "Content",
-    items: [
-      { to: "/study-plan", label: "Study Plan", icon: CalendarDays },
-      { to: "/cambridge", label: "Cambridge Library", icon: BookOpen },
-      { to: "/questions", label: "Question Bank", icon: ListChecks },
-      { to: "/mock-tests", label: "Mock Tests", icon: ClipboardCheck },
-      { to: "/modules", label: "Modules", icon: Layers },
+      { to: "/study-plan", label: "60-Day Plan", icon: CalendarDays },
+      { to: "/cambridge", label: "Cambridge Practice", icon: BookOpen },
       { to: "/homepage", label: "Homepage", icon: Home },
+      { to: "/settings", label: "Settings", icon: Settings },
     ],
   },
-  { label: "System", items: [{ to: "/settings", label: "Settings", icon: Settings }] },
 ];
 
 export function Logo() {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, ShieldAlert, LogIn, CalendarDays, BookOpen, Users } from "lucide-react";
+import { Eye, EyeOff, ShieldAlert, LogIn, CalendarDays, ListChecks, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/form-controls";
 import { FormField } from "@/components/common/misc";
@@ -121,12 +121,12 @@ export default function Login() {
           <div className="relative">
             <p className="text-sm text-muted-foreground">Content & platform management</p>
             <h2 className="mt-3 max-w-md text-4xl font-semibold leading-tight tracking-tight">Run the whole 60-day IELTS programme from one place.</h2>
-            <p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">Edit daily tasks, manage the Cambridge 10–21 library and question bank, build mock tests and follow every student's progress.</p>
+            <p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">Edit every day of the plan and the website homepage, then send them to the student website.</p>
             <div className="mt-10 grid max-w-lg grid-cols-3 gap-3">
               {[
                 { icon: CalendarDays, value: "60", label: "Plan days" },
-                { icon: BookOpen, value: "48", label: "Cambridge tests" },
-                { icon: Users, value: "40", label: "Demo students" },
+                { icon: ListChecks, value: "240", label: "Tasks" },
+                { icon: Languages, value: "1,200", label: "Words" },
               ].map((s) => (
                 <div key={s.label} className="rounded border border-border bg-subtle/60 p-4">
                   <s.icon className="h-4 w-4 text-muted-foreground" />
