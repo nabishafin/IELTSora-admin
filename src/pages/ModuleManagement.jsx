@@ -61,9 +61,7 @@ export default function ModuleManagement() {
   return (
     <div>
       <PageHeader
-        eyebrow="Content"
         title="Modules"
-        description="Manage the four IELTS modules — visibility, descriptions, student instructions and practice categories."
         actions={<Button variant="secondary" onClick={() => setConfirmReset(true)}><RotateCcw /> Reset modules</Button>}
       />
 

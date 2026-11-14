@@ -95,9 +95,7 @@ export default function Settings() {
   return (
     <div>
       <PageHeader
-        eyebrow="System"
         title="Settings"
-        description="Admin profile, platform defaults, study plan rules, notifications and data management."
         actions={
           <>
             {dirty && <Badge variant="warning">Unsaved changes</Badge>}
@@ -201,7 +199,7 @@ export default function Settings() {
             </div>
             <div className="rounded-lg border border-border p-4">
               <p className="text-sm font-semibold">Content sync</p>
-              <p className="mt-1 text-xs text-muted-foreground">The website runs on a different origin, so content is shared via a JSON file (study plan, homepage, future-day setting).</p>
+              <p className="mt-1 text-xs text-muted-foreground">Send the study plan and homepage to the website as a JSON file.</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <Button size="sm" variant="secondary" onClick={() => { downloadContentExport(); toast({ title: "Content exported", variant: "success" }); }}><Download /> Export</Button>
                 <input ref={fileRef} type="file" accept=".json,application/json" className="hidden" onChange={onImport} />
@@ -210,7 +208,7 @@ export default function Settings() {
             </div>
             <div className="rounded-lg border border-red-700/30 bg-red-50/40 p-4">
               <p className="text-sm font-semibold text-red-800">Reset all data</p>
-              <p className="mt-1 text-xs text-muted-foreground">Restore students, study plan, library, questions, mock tests, modules, homepage and settings to the demo seed. You stay signed in.</p>
+              <p className="mt-1 text-xs text-muted-foreground">Restore all demo data. You stay signed in.</p>
               <Button size="sm" variant="destructive" className="mt-3" onClick={() => setConfirmReset(true)}><Trash2 /> Reset everything</Button>
             </div>
           </div>

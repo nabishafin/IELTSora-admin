@@ -60,9 +60,7 @@ export default function Analytics() {
   return (
     <div>
       <PageHeader
-        eyebrow="Insights"
         title="Analytics"
-        description="Student growth, engagement, module popularity, completion and score trends. Time series are deterministic mock data scaled to the stored students."
         actions={
           <>
             <div className="flex rounded-lg bg-black/[0.05] p-0.5" role="group" aria-label="Date range">
@@ -100,7 +98,7 @@ export default function Analytics() {
           </div>
         </ChartCard>
 
-        <ChartCard title="Student growth" description="Cumulative registered students · last 12 months" legend={<ChartLegend items={[{ label: "Total", color: CHART.palette[0] }, { label: "New", color: CHART.palette[1], dashed: true }]} />}>
+        <ChartCard title="Student growth" description="Last 12 months" legend={<ChartLegend items={[{ label: "Total", color: CHART.palette[0] }, { label: "New", color: CHART.palette[1], dashed: true }]} />}>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={d.growth} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
@@ -115,7 +113,7 @@ export default function Analytics() {
           </div>
         </ChartCard>
 
-        <ChartCard title="Task completion" description="Study-plan tasks completed per day">
+        <ChartCard title="Task completion" description="Tasks per day">
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={d.series} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
@@ -129,7 +127,7 @@ export default function Analytics() {
           </div>
         </ChartCard>
 
-        <ChartCard title="Reading & Listening score trends" description="Average estimated band per day" legend={<ChartLegend items={[{ label: "Reading", color: MODULE_COLORS.reading }, { label: "Listening", color: MODULE_COLORS.listening }]} />}>
+        <ChartCard title="Reading & Listening score trends" description="Average band per day" legend={<ChartLegend items={[{ label: "Reading", color: MODULE_COLORS.reading }, { label: "Listening", color: MODULE_COLORS.listening }]} />}>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={d.series} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
@@ -144,7 +142,7 @@ export default function Analytics() {
           </div>
         </ChartCard>
 
-        <ChartCard title="Module popularity" description="Practice sessions by module (all time)">
+        <ChartCard title="Module popularity" description="Sessions, all time">
           <div className="h-60">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={d.popularity} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
@@ -158,7 +156,7 @@ export default function Analytics() {
           </div>
         </ChartCard>
 
-        <ChartCard title="Average practice scores" description="Mean estimated band per module across students">
+        <ChartCard title="Average practice scores" description="Mean band per module">
           <div className="h-60">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={d.scores} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
@@ -172,7 +170,7 @@ export default function Analytics() {
           </div>
         </ChartCard>
 
-        <ChartCard className="xl:col-span-2" title="Study plan completion by day" description="Share of students who have completed each day of the 60-day plan">
+        <ChartCard className="xl:col-span-2" title="Study plan completion by day" description="% of students past each day">
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={d.byDay} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
@@ -193,7 +191,7 @@ export default function Analytics() {
             <p className="label-xs">{p.phase}</p>
             <p className="mt-2 text-3xl font-semibold tabular-nums">{p.completionRate}%</p>
             <p className="mt-1 text-xs text-muted-foreground">of students finished this phase</p>
-            <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-neutral-200"><div className="h-full rounded-full bg-[#4F74A8]" style={{ width: `${p.completionRate}%` }} /></div>
+            <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-neutral-200"><div className="h-full rounded-full bg-[#5E8C6E]" style={{ width: `${p.completionRate}%` }} /></div>
             <p className="mt-3 text-xs text-muted-foreground">{p.students} currently in phase · {p.finished} finished</p>
           </div>
         ))}

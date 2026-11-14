@@ -118,9 +118,7 @@ export default function StudyPlanManagement() {
   return (
     <div>
       <PageHeader
-        eyebrow="Content"
         title="60-Day study plan"
-        description="Manage all 60 preparation days. Every day must contain one Reading, Listening, Writing and Speaking task."
         actions={
           <>
             <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={onImportFile} />
@@ -152,7 +150,6 @@ export default function StudyPlanManagement() {
                 </div>
                 <span className="text-xs tabular-nums text-muted-foreground">{pub}/{days.length} live</span>
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">{p.description}</p>
               <div className="mt-4 flex gap-2">
                 <Button size="sm" variant="secondary" onClick={() => setBulk({ phase: p.name, published: true })} disabled={pub === days.length}>Publish all</Button>
                 <Button size="sm" variant="ghost" onClick={() => setBulk({ phase: p.name, published: false })} disabled={pub === 0}>Unpublish all</Button>

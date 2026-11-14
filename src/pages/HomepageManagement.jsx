@@ -179,9 +179,7 @@ export default function HomepageManagement() {
   return (
     <div>
       <PageHeader
-        eyebrow="Content"
         title="Homepage content"
-        description="Edit the public website's hero, features, testimonials, FAQs and footer. Export the content file and import it in the website to apply changes there."
         actions={
           <>
             {dirty && <Badge variant="warning">Unsaved changes</Badge>}

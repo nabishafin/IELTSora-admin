@@ -47,7 +47,7 @@ export default function Login() {
   };
 
   return (
-    <div className="grid min-h-screen bg-background lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+    <div className="grid min-h-screen lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
       {/* Left: form card */}
       <div className="flex items-center justify-center px-4 py-10 sm:px-8">
         <div className="w-full max-w-[400px]">
@@ -111,7 +111,7 @@ export default function Login() {
 
       {/* Right: media panel */}
       <div className="hidden p-3 lg:block">
-        <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-xl border border-border bg-white p-12 text-ink">
+        <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-xl border border-white/70 bg-white/60 p-12 text-ink backdrop-blur-xl">
           <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#4F74A8]/10 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-32 left-10 h-72 w-72 rounded-full bg-[#4F74A8]/10 blur-3xl" />
           <div className="relative flex items-center gap-2 text-sm text-muted-foreground">

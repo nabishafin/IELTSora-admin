@@ -46,7 +46,7 @@ export function Badge({ className, variant, ...props }) {
 export const Progress = React.forwardRef(({ className, value, indicatorClassName, ...props }, ref) => (
   <ProgressPrimitive.Root ref={ref} className={cn("relative h-1.5 w-full overflow-hidden rounded-full bg-black/[0.08]", className)} {...props}>
     <ProgressPrimitive.Indicator
-      className={cn("h-full w-full flex-1 rounded-full bg-[#4F74A8] transition-all duration-500", indicatorClassName)}
+      className={cn("h-full w-full flex-1 rounded-full bg-[#5E8C6E] transition-all duration-500", indicatorClassName)}
       style={{ transform: "translateX(-" + (100 - Math.min(100, Math.max(0, value || 0))) + "%)" }}
     />
   </ProgressPrimitive.Root>

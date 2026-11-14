@@ -121,9 +121,7 @@ export default function CambridgeManagement() {
   return (
     <div>
       <PageHeader
-        eyebrow="Content"
         title="Cambridge library"
-        description="Manage Cambridge IELTS books, their four tests and every passage, section, task and speaking part. All practice content is original demo material."
         actions={<Button onClick={() => setForm({ initial: null })}><Plus /> Add book</Button>}
       />
 

@@ -114,9 +114,7 @@ export default function Users() {
   return (
     <div>
       <PageHeader
-        eyebrow="Users"
         title="Students"
-        description="Search, filter and manage every mock student account on the platform."
         actions={
           <>
             <Button variant="secondary" onClick={exportCsv} disabled={!filtered.length}>

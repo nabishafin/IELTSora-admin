@@ -50,9 +50,7 @@ export default function Overview() {
   return (
     <div>
       <PageHeader
-        eyebrow="Dashboard"
         title="Platform overview"
-        description="A snapshot of students, content and activity across the IELTSora platform."
         actions={
           <>
             <Button variant="secondary" asChild>
@@ -104,7 +102,7 @@ export default function Overview() {
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-3">
-        <ChartCard className="xl:col-span-2" title="Student growth" description="Cumulative registered students, last 12 months">
+        <ChartCard className="xl:col-span-2" title="Student growth" description="Last 12 months">
           <div className="h-60">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data.growth} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>

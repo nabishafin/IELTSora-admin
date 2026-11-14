@@ -5,18 +5,29 @@
 @layer base {
   * { @apply border-border; }
   html { -webkit-font-smoothing: antialiased; }
-  body { @apply bg-background text-ink font-sans text-sm; }
+  /* Soft tinted gradient behind the frosted-glass surfaces (same as the student website). */
+  body {
+    @apply text-ink font-sans text-sm;
+    background-color: #eef0f4;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(79, 116, 168, 0.16) 0px, transparent 45%),
+      radial-gradient(at 100% 0%, rgba(122, 104, 174, 0.12) 0px, transparent 45%),
+      radial-gradient(at 100% 100%, rgba(94, 140, 110, 0.10) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(181, 118, 58, 0.08) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
   ::selection { background: #1b1b1b; color: #fff; }
   :focus-visible { outline: 2px solid #1b1b1b; outline-offset: 2px; }
 }
 
 @layer components {
-  /* Astryx-style surfaces: white card on the gray page, 16px container radius. */
-  .surface { @apply rounded-xl border border-border bg-white shadow-xs; }
-  .surface-strong { @apply rounded-xl border border-black/15 bg-white shadow-low; }
-  /* Tile grid: children separated by 1px hairlines inside one rounded card. */
-  .tiles { @apply grid gap-px overflow-hidden rounded-xl border border-border bg-border shadow-xs; }
-  .tiles > * { @apply bg-white; }
+  /* Frosted glass. The admin uses a more opaque white than the website so tables and forms stay crisp. */
+  .glass { @apply border border-white/70 bg-white/80 backdrop-blur-xl; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8); }
+  .surface { @apply glass rounded-xl; }
+  .surface-strong { @apply rounded-xl border border-white/80 bg-white/90 backdrop-blur-xl shadow-med; }
+  /* Tile grid: children separated by 1px hairlines inside one rounded glass card. */
+  .tiles { @apply grid gap-px overflow-hidden rounded-xl border border-white/70 bg-black/[0.06] backdrop-blur-xl shadow-xs; }
+  .tiles > * { @apply bg-white/85; }
   .label-xs { @apply text-xs font-medium text-muted-foreground; }
   .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
   .scrollbar-thin::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 9999px; }

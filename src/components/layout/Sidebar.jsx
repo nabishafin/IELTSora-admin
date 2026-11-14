@@ -43,7 +43,7 @@ export function Logo() {
 export default function Sidebar({ onNavigate, onLogout }) {
   const { session } = useAuth();
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className="flex h-full flex-col bg-white/70 backdrop-blur-xl">
       <div className="flex h-16 items-center border-b border-border px-5">
         <Logo />
       </div>

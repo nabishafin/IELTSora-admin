@@ -108,9 +108,7 @@ export default function QuestionManagement() {
   return (
     <div>
       <PageHeader
-        eyebrow="Content"
         title="Question bank"
-        description="Create and manage Reading and Listening questions for every Cambridge book, test, passage and section."
         actions={<Button onClick={() => setForm({ mode: "create", initial: null })}><Plus /> Create question</Button>}
       />
 

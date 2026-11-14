@@ -115,7 +115,7 @@ export default function UserDetails() {
           <p className="mt-5 border-t border-border pt-4 text-xs text-muted-foreground">{phaseInfo?.description}</p>
         </div>
 
-        <ChartCard title="Module performance" description="Latest estimated band per module vs target">
+        <ChartCard title="Module performance" description="Band vs target">
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={perf} margin={{ top: 12, right: 12, left: -20, bottom: 0 }}>
@@ -130,7 +130,7 @@ export default function UserDetails() {
           </div>
         </ChartCard>
 
-        <ChartCard title="Score trend" description="Practice session scores over time" legend={<ChartLegend items={[{ label: "Session score", color: CHART.primary }, { label: "Target", color: CHART.mid, dashed: true }]} />}>
+        <ChartCard title="Score trend" description="Session scores" legend={<ChartLegend items={[{ label: "Session score", color: CHART.primary }, { label: "Target", color: CHART.mid, dashed: true }]} />}>
           {trend.length < 2 ? (
             <EmptyState className="mx-3 my-6" title="Not enough sessions" description="A trend appears after two practice sessions." />
           ) : (

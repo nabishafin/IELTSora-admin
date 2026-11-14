@@ -348,9 +348,7 @@ export default function MockTestManagement() {
   return (
     <div>
       <PageHeader
-        eyebrow="Content"
         title="Mock tests"
-        description="Build timed mock exams from the question bank, configure scoring and preview the student experience."
         actions={<Button onClick={() => setForm({ initial: null })}><Plus /> Create mock test</Button>}
       />
 
