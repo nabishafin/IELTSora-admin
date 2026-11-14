@@ -3,7 +3,7 @@ import animate from "tailwindcss-animate";
 /*
  * Design tokens modelled on the Astryx "Neutral" theme (astryx.atmeta.com):
  * Figtree type, #F1F1F1 page background with white surfaces, near-black accent,
- * soft 1px borders and a 2px radius scale (crisp, almost square corners).
+ * soft 1px borders and a small radius scale (square cards with lightly rounded corners).
  */
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -31,7 +31,7 @@ export default {
         popover: { DEFAULT: "#FFFFFF", foreground: "#1B1B1B" },
         card: { DEFAULT: "#FFFFFF", foreground: "#1B1B1B" },
       },
-      borderRadius: { none: "0", sm: "1px", DEFAULT: "2px", md: "2px", lg: "2px", xl: "2px", "2xl": "3px", "3xl": "4px" },
+      borderRadius: { none: "0", sm: "3px", DEFAULT: "4px", md: "5px", lg: "6px", xl: "8px", "2xl": "10px", "3xl": "12px" },
       fontSize: { xs: ["12.5px", "18px"], sm: ["14.5px", "21px"] },
       boxShadow: {
         xs: "0 1px 2px rgba(0,0,0,0.05)",
