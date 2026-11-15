@@ -10,7 +10,7 @@ export default function NotFound() {
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">The admin page you are looking for does not exist or has been moved.</p>
       <Button asChild className="mt-6">
         <Link to="/">
-          <ArrowLeft /> Back to the plan
+          <ArrowLeft /> Back to overview
         </Link>
       </Button>
     </div>

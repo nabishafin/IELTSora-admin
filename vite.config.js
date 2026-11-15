@@ -12,6 +12,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           react: ["react", "react-dom", "react-router-dom"],
+          charts: ["recharts"],
           radix: ["@radix-ui/react-dialog", "@radix-ui/react-select", "@radix-ui/react-tabs", "@radix-ui/react-checkbox", "@radix-ui/react-switch", "@radix-ui/react-radio-group", "@radix-ui/react-progress", "@radix-ui/react-label", "@radix-ui/react-slot"],
         },
       },
