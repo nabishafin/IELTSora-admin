@@ -44,7 +44,7 @@ export default function Overview() {
     };
   }, [users, plan]);
 
-  const publishedTests = cambridge.reduce((n, b) => n + b.tests.filter((t) => t.published).length, 0);
+  const editedParts = cambridge.length;
   const publishedDays = plan.filter((d) => d.published).length;
 
   return (
@@ -68,7 +68,7 @@ export default function Overview() {
         <StatCard className="rounded-none border-0 shadow-none" label="Active students" value={formatNumber(data.active)} hint={`${pct(data.active, users.length)}% of all accounts`} icon={UserCheck} />
         <StatCard className="rounded-none border-0 shadow-none" label="Daily plan tasks" value={formatNumber(data.totalTasks)} hint={`${publishedDays}/60 days published`} icon={ListChecks} />
         <StatCard className="rounded-none border-0 shadow-none" label="Tasks completed" value={formatNumber(data.completed)} hint={`${data.completionRate}% of all assigned tasks`} icon={CheckCircle2} />
-        <StatCard className="rounded-none border-0 shadow-none" label="Cambridge sessions" value={formatNumber(data.cambridgeSessions)} hint={`${publishedTests}/48 tests published`} icon={BookOpen} />
+        <StatCard className="rounded-none border-0 shadow-none" label="Cambridge sessions" value={formatNumber(data.cambridgeSessions)} hint={`${editedParts} parts edited`} icon={BookOpen} />
         <StatCard className="rounded-none border-0 shadow-none" label="Mock tests" value={formatNumber(mockTests.length)} hint={`${mockTests.filter((m) => m.published).length} published`} icon={ClipboardCheck} />
       </div>
 

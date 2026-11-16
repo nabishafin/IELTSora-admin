@@ -5,8 +5,12 @@
  * (through the hooks in src/hooks), so swapping it for a REST/GraphQL client
  * later only requires changing the functions below.
  */
-import { generateStudyPlan } from "@/data/mockStudyPlan";
-import { defaultHomepage } from "@/data/mockHomepage";
+import { generateUsers } from "@/data/mockUsers";
+import { generateStudyPlan, legacyStudyPlan } from "@/data/mockStudyPlan";
+import { generateQuestions } from "@/data/mockQuestions";
+import { generateMockTests } from "@/data/mockTests";
+import { generateModules } from "@/data/mockModules";
+import { defaultHomepage, legacyHomepage } from "@/data/mockHomepage";
 import { defaultSettings } from "@/data/mockSettings";
 import { getDayVocabulary } from "@/data/vocabulary";
 
@@ -17,9 +21,13 @@ export const CHANGE_EVENT = "ieltsora-admin-storage";
 const clone = (v) => JSON.parse(JSON.stringify(v));
 
 export const STORES = {
+  users: { key: `${PREFIX}users`, seed: generateUsers },
   studyPlan: { key: `${PREFIX}study_plan`, seed: generateStudyPlan },
   // Uploaded Cambridge Reading passages / Listening sections (see utils/cambridgeContent.js).
   cambridge: { key: `${PREFIX}cambridge_content`, seed: () => [] },
+  questions: { key: `${PREFIX}questions`, seed: generateQuestions },
+  mockTests: { key: `${PREFIX}mock_tests`, seed: generateMockTests },
+  modules: { key: `${PREFIX}modules`, seed: generateModules },
   homepage: { key: `${PREFIX}homepage`, seed: () => clone(defaultHomepage) },
   settings: { key: `${PREFIX}settings`, seed: () => clone(defaultSettings) },
 };
@@ -30,10 +38,26 @@ export const STORES = {
  */
 const MIGRATIONS = {
   // v2: every study-plan day carries 20 vocabulary words.
-  [`${PREFIX}study_plan`]: (plan) =>
-    Array.isArray(plan) && plan.some((d) => d && d.vocabulary === undefined)
+  [`${PREFIX}study_plan`]: (plan) => {
+    if (!Array.isArray(plan)) return plan;
+    let out = plan.some((d) => d && d.vocabulary === undefined)
       ? plan.map((d) => (d && d.vocabulary === undefined ? { ...d, vocabulary: getDayVocabulary(d.day) } : d))
-      : plan,
+      : plan;
+    // v3: the default plan is now the website's own plan. Days never edited in the admin
+    // (identical to the old built-in plan) switch to it; edited days are kept.
+    const legacy = new Map(legacyStudyPlan().map((d) => [d.day, JSON.stringify(d)]));
+    const current = new Map(generateStudyPlan().map((d) => [d.day, d]));
+    const untouched = (d) => d && current.has(d.day) && legacy.get(d.day) === JSON.stringify(d);
+    if (out.some(untouched)) out = out.map((d) => (untouched(d) ? current.get(d.day) : d));
+    return out;
+  },
+  // v3: an untouched homepage switches to the website's own homepage text.
+  [`${PREFIX}homepage`]: (h) => (JSON.stringify(h) === JSON.stringify(legacyHomepage) ? JSON.parse(JSON.stringify(defaultHomepage)) : h),
+  // Settings saved while the admin had fewer sections: fill in the missing ones.
+  [`${PREFIX}settings`]: (s) =>
+    s && typeof s === "object" && Object.keys(defaultSettings).some((k) => !s[k])
+      ? Object.fromEntries(Object.keys({ ...defaultSettings, ...s }).map((k) => [k, typeof defaultSettings[k] === "object" ? { ...defaultSettings[k], ...(s[k] || {}) } : s[k] ?? defaultSettings[k]]))
+      : s,
 };
 
 const cache = new Map();

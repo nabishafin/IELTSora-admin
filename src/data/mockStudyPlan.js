@@ -5,6 +5,7 @@
  */
 import { phaseForDay, CAMBRIDGE_BOOK_NUMBERS } from "@/utils/constants";
 import { getDayVocabulary } from "@/data/vocabulary";
+import { DAILY_PLAN } from "@/data/website/dailyPlan";
 
 /* All 48 Cambridge tests in order: Book 10 Test 1 ... Book 21 Test 4 */
 const TESTS = CAMBRIDGE_BOOK_NUMBERS.flatMap((book) => [1, 2, 3, 4].map((test) => ({ book, test })));
@@ -255,7 +256,8 @@ function fullMockTasks(day) {
   ];
 }
 
-export function generateStudyPlan() {
+/** The plan the admin used to ship with (kept only to recognise untouched saved days). */
+export function legacyStudyPlan() {
   const counters = {};
   return DAYS.map((def, i) => {
     const day = i + 1;
@@ -281,5 +283,7 @@ export function generateStudyPlan() {
   });
 }
 
+/** Default plan = exactly what the student website shows out of the box. */
+export const generateStudyPlan = () => JSON.parse(JSON.stringify(DAILY_PLAN));
 export const defaultStudyPlan = generateStudyPlan();
 export const getDefaultDay = (day) => JSON.parse(JSON.stringify(defaultStudyPlan.find((d) => d.day === day) || null));

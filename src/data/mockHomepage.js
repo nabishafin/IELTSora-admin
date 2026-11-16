@@ -1,5 +1,8 @@
 /** Default homepage content for the student website (shape matches the content export). */
-export const defaultHomepage = {
+import { DEFAULT_HOMEPAGE } from "@/data/website/homepage";
+
+/** The homepage text the admin used to ship with (kept only to recognise an untouched saved homepage). */
+export const legacyHomepage = {
   heroTitle: "Your IELTS Goal. One Focused Day at a Time.",
   heroDescription:
     "A structured 60-day plan that combines Cambridge practice, timed mock tests and daily tasks across Reading, Listening, Writing and Speaking, so you always know exactly what to do next.",
@@ -32,3 +35,6 @@ export const defaultHomepage = {
     address: "12 Learning Lane, London, United Kingdom",
   },
 };
+
+/** Default homepage = exactly what the student website shows out of the box. */
+export const defaultHomepage = DEFAULT_HOMEPAGE;
