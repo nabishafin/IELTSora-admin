@@ -2,7 +2,7 @@ import animate from "tailwindcss-animate";
 
 /*
  * Design tokens modelled on the Astryx "Neutral" theme (astryx.atmeta.com):
- * Figtree type, #F1F1F1 page background with white surfaces, near-black accent,
+ * Inter type, #F1F1F1 page background with white surfaces, near-black accent,
  * soft 1px borders and a small radius scale (square cards with lightly rounded corners).
  */
 /** @type {import('tailwindcss').Config} */
@@ -11,7 +11,7 @@ export default {
   theme: {
     container: { center: true, padding: { DEFAULT: "1rem", sm: "1.5rem", lg: "2rem" }, screens: { "2xl": "1440px" } },
     extend: {
-      fontFamily: { sans: ["Figtree", "system-ui", "sans-serif"], mono: ["SF Mono", "ui-monospace", "monospace"] },
+      fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], mono: ["SF Mono", "ui-monospace", "monospace"] },
       colors: {
         border: "#E3E3E3",
         input: "#D4D4D4",
